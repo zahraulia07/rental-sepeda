@@ -10,7 +10,7 @@
         * { box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            margin: 0; padding: 40px 24px;
+            margin: 0; padding: 0;
             background-color: #F6F7FB;
             background-image:
                 radial-gradient(circle at 6% 0%, rgba(6, 182, 212, 0.10), transparent 30%),
@@ -126,16 +126,10 @@
 </head>
 <body>
 
+<div class="app-shell">
+@include('partials.admin-sidebar')
+<main class="admin-main">
 <div class="container">
-    <div class="topbar">
-        <div class="user-info">Masuk sebagai <b>{{ Auth::user()->name }}</b><span class="role-badge">{{ Auth::user()->role }}</span></div>
-        <form action="/logout" method="POST" onsubmit="return confirm('Keluar dari sistem?')">
-            @csrf
-            <button type="submit" class="btn-logout">Keluar</button>
-        </form>
-    </div>
-
-    @include('partials.admin-nav')
 
     <div class="header-wrapper">
         <div class="eyebrow">Panel Kendali Armada</div>
@@ -360,6 +354,9 @@
         }
     }
 </script>
+
+</main>
+</div>
 
 </body>
 </html>

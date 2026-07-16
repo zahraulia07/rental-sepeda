@@ -8,7 +8,7 @@
         * { box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0; padding: 40px 24px;
+            margin: 0; padding: 0;
             background-color: #f4f8fb;
             background-image:
                 radial-gradient(circle at 8% 8%, rgba(99, 102, 241, 0.14), transparent 32%),
@@ -72,17 +72,10 @@
 </head>
 <body>
 
+<div class="app-shell">
+@include('partials.admin-sidebar')
+<main class="admin-main">
 <div class="container">
-    <div class="topbar">
-        <div class="brand"><span class="dot"></span> BikeRent Admin</div>
-        <div>Masuk sebagai <b>{{ Auth::user()->name }}</b><span class="role-badge">{{ Auth::user()->role }}</span></div>
-        <form action="/logout" method="POST" onsubmit="return confirm('Keluar dari sistem?')">
-            @csrf
-            <button type="submit" class="btn-logout">Keluar</button>
-        </form>
-    </div>
-
-    @include('partials.admin-nav')
 
     <h2>📜 Riwayat Transaksi Selesai</h2>
 
@@ -233,6 +226,9 @@
         if (event.target == modalDet) modalDet.style.display = 'none';
     }
 </script>
+
+</main>
+</div>
 
 </body>
 </html>
