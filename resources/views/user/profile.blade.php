@@ -57,7 +57,7 @@
 
 <div class="container">
     <div class="topbar">
-        <div class="brand"><span class="dot"></span> BikeRent</div>
+        <div class="brand"><span class="dot"></span> Gowesin</div>
         <div class="user-info">Masuk sebagai <b>{{ Auth::user()->name }}</b><span class="role-badge">{{ Auth::user()->role }}</span></div>
         <form action="/logout" method="POST" onsubmit="return confirm('Keluar dari sistem?')">
             @csrf
