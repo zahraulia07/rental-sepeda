@@ -30,6 +30,9 @@ RUN apt-get update && apt-get install -y \
 # 2. Aktifkan modul mod_rewrite Apache untuk routing Laravel
 RUN a2enmod rewrite
 
+# 2b. Fix "More than one MPM loaded": mod_php cuma kompatibel dengan mpm_prefork
+RUN a2dismod mpm_event 2>/dev/null; a2dismod mpm_worker 2>/dev/null; a2enmod mpm_prefork
+
 # 3. Ubah Document Root Apache agar mengarah ke folder /public milik Laravel
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
@@ -60,5 +63,5 @@ CMD chown -R www-data:www-data /var/www/html/storage/app/public \
     && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache \
-    && php artisan storage:link \
+    && php artisan storage:link --force \
     && apache2-foreground
