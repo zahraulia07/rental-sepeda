@@ -132,7 +132,7 @@
 <div class="container">
 
     <div class="header-wrapper">
-        <div class="eyebrow">Panel Kendali Armadaa</div>
+        <div class="eyebrow">Panel Kendali Armada</div>
         <h2>Inventaris Rental Sepeda</h2>
         <button class="btn-trigger" onclick="openModal('POST')">＋ Tambah Armada Sepeda</button>
     </div>
