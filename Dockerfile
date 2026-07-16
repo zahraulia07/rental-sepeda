@@ -1,7 +1,7 @@
 # ==========================================
 # Tahap 1: Build Aset Frontend (Tailwind CSS)
 # ==========================================
-FROM node:18-alpine AS frontend-builder
+FROM node:20-alpine AS frontend-builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
