@@ -16,26 +16,22 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    // Proses login
+    // Proses login — menerima email ATAU username di kolom yang sama
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'username' => ['required', 'string'],
+        $request->validate([
+            'identifier' => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
 
-        if (Auth::attempt($credentials)) {
-            if (Auth::user()->is_blocked) {
-                $alasan = Auth::user()->alasan_blokir;
-                Auth::logout();
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
+        $loginField = filter_var($request->identifier, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-                return back()
-                    ->withErrors(['username' => 'Akun Anda diblokir oleh admin.' . ($alasan ? ' Alasan: ' . $alasan : '')])
-                    ->onlyInput('username');
-            }
+        $credentials = [
+            $loginField => $request->identifier,
+            'password' => $request->password,
+        ];
 
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
             $tujuan = Auth::user()->role === 'admin' ? '/admin/sepeda' : '/dashboard';
@@ -44,8 +40,8 @@ class AuthController extends Controller
         }
 
         return back()
-            ->withErrors(['username' => 'Username atau password yang Anda masukkan salah.'])
-            ->onlyInput('username');
+            ->withErrors(['identifier' => 'Email/Username atau password yang Anda masukkan salah.'])
+            ->onlyInput('identifier');
     }
 
     // Menampilkan halaman register

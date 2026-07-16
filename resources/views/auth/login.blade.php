@@ -3,173 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Rental Sepeda</title>
+    <title>Masuk - Gowesin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f4f8fb;
-            background-image:
-                radial-gradient(circle at 8% 8%, rgba(16, 185, 129, 0.16), transparent 32%),
-                radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.16), transparent 34%),
-                radial-gradient(circle at 50% 95%, rgba(245, 158, 11, 0.10), transparent 38%);
-            background-attachment: fixed;
-            color: #1e293b;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            margin: 0; min-height: 100vh;
+            display: flex; color: #10131C;
         }
 
-        .wrapper {
-            width: 100%;
-            max-width: 880px;
-            background: #ffffff;
-            border-radius: 28px;
-            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.10);
-            border: 1px solid #eef2f7;
-            overflow: hidden;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        /* PANEL KIRI — ilustrasi + gradasi */
+        .panel-hero {
+            flex: 1.1; position: relative; overflow: hidden; min-height: 100vh;
+            background: linear-gradient(155deg, #06B6D4 0%, #635BFF 55%, #7C3AED 100%);
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 44px 48px;
         }
+        .panel-hero::before, .panel-hero::after {
+            content: ''; position: absolute; border-radius: 50%;
+            background: rgba(255,255,255,0.10);
+        }
+        .panel-hero::before { width: 420px; height: 420px; top: -140px; right: -140px; }
+        .panel-hero::after { width: 300px; height: 300px; bottom: -100px; left: -80px; background: rgba(255,255,255,0.08); }
 
-        /* Panel kiri: hero brand */
-        .hero {
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(150deg, #10b981 0%, #06b6d4 100%);
-            color: #fff;
-            padding: 44px 38px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .hero::before {
-            content: ""; position: absolute; top: -70px; right: -50px; width: 240px; height: 240px;
-            background: rgba(255,255,255,0.14); border-radius: 50%;
-        }
-        .hero::after {
-            content: ""; position: absolute; bottom: -90px; left: -40px; width: 220px; height: 220px;
-            background: rgba(255,255,255,0.10); border-radius: 50%;
-        }
-        .hero-top { position: relative; z-index: 1; }
-        .hero-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 18px; margin-bottom: 40px; }
-        .hero-brand .dot { width: 12px; height: 12px; border-radius: 50%; background: #fff; }
-        .hero-emoji { font-size: 46px; margin-bottom: 14px; }
-        .hero h1 { font-size: 26px; margin: 0 0 10px; line-height: 1.3; position: relative; z-index: 1; }
-        .hero p { font-size: 13.5px; opacity: 0.92; line-height: 1.6; margin: 0; position: relative; z-index: 1; }
+        .brand-mark { display: flex; align-items: center; gap: 10px; position: relative; z-index: 2; }
+        .brand-mark .bike-icon { font-size: 26px; }
+        .brand-mark .brand-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; color: #fff; letter-spacing: -0.3px; }
 
-        .hero-features { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 14px; margin-top: 30px; }
-        .hero-feature { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; }
-        .hero-feature .ico {
-            width: 30px; height: 30px; border-radius: 10px; background: rgba(255,255,255,0.18);
-            display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0;
-        }
+        .hero-illustration { position: relative; z-index: 2; text-align: center; font-size: 150px; line-height: 1; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15)); }
 
-        /* Panel kanan: form */
-        .form-panel { padding: 44px 40px; display: flex; flex-direction: column; justify-content: center; }
-        .brand-mobile { display: none; text-align: center; margin-bottom: 24px; }
-        .brand-mobile h1 { font-size: 20px; margin: 0; color: #0f172a; }
+        .hero-copy { position: relative; z-index: 2; color: #fff; }
+        .hero-copy h1 { font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700; line-height: 1.25; margin: 0 0 12px; letter-spacing: -0.4px; }
+        .hero-copy p { font-size: 14.5px; line-height: 1.6; color: rgba(255,255,255,0.85); max-width: 380px; margin: 0; }
 
-        .form-title { margin-bottom: 26px; }
-        .form-title h2 { margin: 0 0 6px; font-size: 22px; color: #0f172a; }
-        .form-title p { margin: 0; font-size: 13.5px; color: #64748b; }
+        /* PANEL KANAN — form */
+        .panel-form { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 24px; background: #F6F7FB; }
+        .form-wrap { width: 100%; max-width: 400px; }
 
-        .form-group { margin-bottom: 18px; }
-        label { display: block; margin-bottom: 6px; font-size: 13.5px; font-weight: 700; color: #334155; }
-        input {
-            width: 100%; padding: 12px 14px; border: 1px solid #e2e8f0;
-            border-radius: 12px; font-size: 14px; background: #f8fafc; color: #0f172a;
+        .form-brand { text-align: center; margin-bottom: 26px; }
+        .form-brand .badge-icon {
+            width: 54px; height: 54px; border-radius: 16px; margin: 0 auto 14px;
+            background: linear-gradient(135deg, #06B6D4 0%, #635BFF 55%, #A855F7 100%);
+            display: flex; align-items: center; justify-content: center; font-size: 26px;
+            box-shadow: 0 10px 22px -6px rgba(99, 91, 255, 0.45);
         }
-        input:focus {
-            outline: none; border-color: #10b981; background: #fff;
-            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12);
-        }
-        .btn-submit {
-            width: 100%; padding: 13px; border: none; border-radius: 999px; margin-top: 6px;
-            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-            color: #fff; font-weight: 800; font-size: 15px;
-            cursor: pointer; transition: all .2s;
-            box-shadow: 0 10px 22px rgba(16, 185, 129, 0.30);
-        }
-        .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 14px 26px rgba(16, 185, 129, 0.38); }
+        .form-brand h2 { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; margin: 0 0 6px; color: #10131C; }
+        .form-brand p { font-size: 13.5px; color: #6B7280; margin: 0; }
 
-        .error-box {
-            background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c;
-            padding: 11px 14px; border-radius: 12px; font-size: 13px; margin-bottom: 18px; font-weight: 600;
+        .card { background: #fff; border: 1px solid #EEF0F7; border-radius: 22px; padding: 30px; box-shadow: 0 14px 40px rgba(15, 23, 42, 0.06); }
+
+        .field-group { margin-bottom: 18px; }
+        .field-group label { display: block; font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 7px; }
+        .input-icon-wrap { position: relative; }
+        .input-icon-wrap .icon-left { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 15px; opacity: 0.55; }
+        .input-icon-wrap input {
+            width: 100%; padding: 12px 14px 12px 40px; border: 1px solid #E2E8F0; border-radius: 12px;
+            font-size: 14px; background: #F8FAFC; color: #10131C; font-family: 'Inter', sans-serif;
         }
-        .success-box {
-            background: #ecfdf5; border: 1px solid #a7f3d0; color: #047857;
-            padding: 11px 14px; border-radius: 12px; font-size: 13px; margin-bottom: 18px; font-weight: 600;
+        .input-icon-wrap input:focus { outline: none; border-color: #635BFF; box-shadow: 0 0 0 4px rgba(99, 91, 255, 0.12); background: #fff; }
+        .toggle-eye { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 15px; opacity: 0.55; user-select: none; background: none; border: none; padding: 4px; }
+
+        .remember-row { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+        .remember-row input[type="checkbox"] { width: 16px; height: 16px; accent-color: #635BFF; }
+        .remember-row label { font-size: 13px; color: #475569; cursor: pointer; }
+
+        .btn-masuk {
+            width: 100%; padding: 13px; border: none; border-radius: 12px; cursor: pointer;
+            background: linear-gradient(135deg, #06B6D4 0%, #635BFF 55%, #A855F7 100%); color: #fff;
+            font-weight: 700; font-size: 14.5px; font-family: 'Inter', sans-serif;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 10px 22px -6px rgba(99, 91, 255, 0.45); transition: all 0.18s;
         }
-        .footer-link { text-align: center; margin-top: 22px; font-size: 13px; color: #64748b; }
-        .footer-link a { color: #10b981; text-decoration: none; font-weight: 700; }
+        .btn-masuk:hover { transform: translateY(-1px); box-shadow: 0 14px 26px -6px rgba(99, 91, 255, 0.55); }
+
+        .error-box { background: #FEF2F2; border-left: 4px solid #E11D48; color: #B91C1C; padding: 11px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 18px; }
+        .success-box { background: #ECFDF5; border-left: 4px solid #10B981; color: #047857; padding: 11px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 18px; }
+
+        .footer-link { text-align: center; margin-top: 22px; font-size: 13.5px; color: #6B7280; }
+        .footer-link a { color: #635BFF; text-decoration: none; font-weight: 700; }
         .footer-link a:hover { text-decoration: underline; }
 
-        @media (max-width: 720px) {
-            .wrapper { grid-template-columns: 1fr; max-width: 420px; }
-            .hero { display: none; }
-            .brand-mobile { display: block; }
+        @media (max-width: 880px) {
+            .panel-hero { display: none; }
+            .panel-form { min-height: 100vh; }
         }
     </style>
 </head>
 <body>
 
-<div class="wrapper">
-    <div class="hero">
-        <div class="hero-top">
-            <div class="hero-brand"><span class="dot"></span> BikeRent</div>
-            <div class="hero-emoji">🚲</div>
-            <h1>Kelola Rental Sepeda Lebih Mudah</h1>
-            <p>Masuk untuk menyewa armada terbaik kami atau kelola inventaris dari satu dashboard yang simpel &amp; cepat.</p>
-        </div>
-        <div class="hero-features">
-            <div class="hero-feature"><span class="ico">⚡</span> Proses sewa cepat, tinggal pilih &amp; ajukan</div>
-            <div class="hero-feature"><span class="ico">🔒</span> Data &amp; pembayaran tercatat rapi</div>
-            <div class="hero-feature"><span class="ico">🛠️</span> Armada terawat & selalu dicek berkala</div>
-        </div>
+<div class="panel-hero">
+    <div class="brand-mark">
+        <span class="bike-icon">🚲</span>
+        <span class="brand-name">Gowesin</span>
     </div>
 
-    <div class="form-panel">
-        <div class="brand-mobile"><h1>🚲 BikeRent</h1></div>
+    <div class="hero-illustration">🚲</div>
 
-        <div class="form-title">
-            <h2>Selamat Datang 👋</h2>
-            <p>Masuk untuk mengelola inventaris armada</p>
+    <div class="hero-copy">
+        <h1>Temukan Kebebasan di Setiap Putaran Pedal.</h1>
+        <p>Layanan penyewaan sepeda modern untuk mobilitas perkotaan yang lebih cerdas, sehat, dan berkelanjutan.</p>
+    </div>
+</div>
+
+<div class="panel-form">
+    <div class="form-wrap">
+        <div class="form-brand">
+            <div class="badge-icon">🚲</div>
+            <h2>Gowesin</h2>
+            <p>Selamat datang kembali! Silakan masuk ke akun Anda.</p>
         </div>
 
-        @if ($errors->any())
-            <div class="error-box">{{ $errors->first() }}</div>
-        @endif
+        <div class="card">
+            @if ($errors->any())
+                <div class="error-box">{{ $errors->first() }}</div>
+            @endif
 
-        @if (session('sukses'))
-            <div class="success-box">✔️ {{ session('sukses') }}</div>
-        @endif
+            @if (session('sukses'))
+                <div class="success-box">✔️ {{ session('sukses') }}</div>
+            @endif
 
-        @if (session('gagal'))
-            <div class="error-box">⚠️ {{ session('gagal') }}</div>
-        @endif
+            <form method="POST" action="/login">
+                @csrf
+                <div class="field-group">
+                    <label>Email / Username</label>
+                    <div class="input-icon-wrap">
+                        <span class="icon-left">👤</span>
+                        <input type="text" name="identifier" value="{{ old('identifier') }}" required autofocus placeholder="nama@email.com atau username">
+                    </div>
+                </div>
 
-        <form method="POST" action="/login">
-            @csrf
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" name="username" value="{{ old('username') }}" required autofocus placeholder="Masukkan username">
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" required placeholder="Masukkan password">
-            </div>
-            <button type="submit" class="btn-submit">Masuk</button>
-        </form>
+                <div class="field-group">
+                    <label>Password</label>
+                    <div class="input-icon-wrap">
+                        <span class="icon-left">🔒</span>
+                        <input type="password" name="password" id="passwordInput" required placeholder="Masukkan password" style="padding-right: 40px;">
+                        <button type="button" class="toggle-eye" onclick="togglePassword()">👁️</button>
+                    </div>
+                </div>
+
+                <div class="remember-row">
+                    <input type="checkbox" name="remember" id="remember">
+                    <label for="remember">Ingat Saya</label>
+                </div>
+
+                <button type="submit" class="btn-masuk">MASUK →</button>
+            </form>
+        </div>
 
         <div class="footer-link">
-            Belum punya akun? <a href="/register">Daftar di sini</a>
+            Belum punya akun? <a href="/register">Daftar Sekarang</a>
         </div>
     </div>
 </div>
+
+<script>
+    function togglePassword() {
+        const input = document.getElementById('passwordInput');
+        input.type = input.type === 'password' ? 'text' : 'password';
+    }
+</script>
 
 </body>
 </html>
