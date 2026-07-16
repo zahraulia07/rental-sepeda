@@ -14,35 +14,35 @@
             display: flex; color: #10131C;
         }
 
-        /* PANEL KIRI — ilustrasi + gradasi */
+        /* PANEL KIRI — foto full-bleed + gradasi warna + memudar ke panel putih */
         .panel-hero {
             flex: 1.1; position: relative; overflow: hidden; min-height: 100vh;
-            background: linear-gradient(155deg, #06B6D4 0%, #635BFF 55%, #7C3AED 100%);
+            background: #635BFF url('{{ asset('images/hero-login.jpg') }}') center / cover no-repeat;
             display: flex; flex-direction: column; justify-content: space-between;
             padding: 44px 48px;
         }
         .panel-hero::before, .panel-hero::after {
-            content: ''; position: absolute; border-radius: 50%;
+            content: ''; position: absolute; border-radius: 50%; z-index: 1;
             background: rgba(255,255,255,0.10);
         }
         .panel-hero::before { width: 420px; height: 420px; top: -140px; right: -140px; }
         .panel-hero::after { width: 300px; height: 300px; bottom: -100px; left: -80px; background: rgba(255,255,255,0.08); }
 
+        /* lapisan warna brand di atas foto, supaya teks tetap kebaca */
+        .hero-tint {
+            position: absolute; inset: 0; z-index: 1;
+            background: linear-gradient(155deg, rgba(6,182,212,0.62) 0%, rgba(99,91,255,0.58) 55%, rgba(124,58,237,0.62) 100%);
+        }
+        /* foto memudar di sisi kanan, menyatu ke warna panel form (putih) di sebelahnya */
+        .hero-fade {
+            position: absolute; inset: 0; z-index: 1;
+            background: linear-gradient(to right, transparent 45%, #F6F7FB 100%);
+        }
+
         .brand-mark { display: flex; align-items: center; gap: 10px; position: relative; z-index: 2; }
         .brand-mark .logo-img { width: 32px; height: 32px; border-radius: 9px; object-fit: cover; display: block; }
         .brand-mark .brand-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; color: #fff; letter-spacing: -0.3px; }
 
-        .hero-illustration {
-            position: relative; z-index: 2; text-align: center;
-            width: 100%; max-width: 420px; aspect-ratio: 1 / 1; margin: 0 auto;
-        }
-        .hero-illustration img {
-            width: 100%; height: 100%; object-fit: cover; border-radius: 28px;
-            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
-            /* memudar di sisi kanan foto, menyatu ke panel gradasi di belakangnya */
-            -webkit-mask-image: linear-gradient(to right, #000 55%, transparent 100%);
-                    mask-image: linear-gradient(to right, #000 55%, transparent 100%);
-        }
 
         .hero-copy { position: relative; z-index: 2; color: #fff; }
         .hero-copy h1 { font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700; line-height: 1.25; margin: 0 0 12px; letter-spacing: -0.4px; }
@@ -105,14 +105,14 @@
 <body>
 
 <div class="panel-hero">
+    <div class="hero-tint"></div>
+    <div class="hero-fade"></div>
+
     <div class="brand-mark">
         <img src="{{ asset('images/logo.png') }}" alt="Gowesin" class="logo-img">
         <span class="brand-name">Gowesin</span>
     </div>
 
-    <div class="hero-illustration">
-        <img src="{{ asset('images/hero-login.jpg') }}" alt="Gowesin">
-    </div>
 
     <div class="hero-copy">
         <h1>Temukan Kebebasan di Setiap Putaran Pedal.</h1>
