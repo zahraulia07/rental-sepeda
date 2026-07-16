@@ -56,7 +56,8 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 EXPOSE 8080
 
 # 10. Script untuk menjalankan optimasi Laravel dan start server Apache
-CMD php artisan config:cache \
+CMD chown -R www-data:www-data /var/www/html/storage/app/public \
+    && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache \
     && php artisan storage:link \
