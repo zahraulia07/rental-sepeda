@@ -24,8 +24,9 @@
     .sidebar-brand .logo-badge {
         width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
         background: linear-gradient(135deg, #0F766E 0%, #10B981 100%);
-        display: flex; align-items: center; justify-content: center; font-size: 17px;
+        display: flex; align-items: center; justify-content: center; font-size: 17px; overflow: hidden;
     }
+    .sidebar-brand .logo-badge img { width: 100%; height: 100%; object-fit: cover; }
     .sidebar-brand .brand-text h1 { font-family: 'Space Grotesk', sans-serif; font-size: 15.5px; font-weight: 700; color: #065F46; margin: 0; line-height: 1.25; }
     .sidebar-brand .brand-text span { font-size: 11px; color: #94A3B8; font-weight: 600; }
 
@@ -69,7 +70,7 @@
 
 <aside class="sidebar">
     <div class="sidebar-brand">
-        <div class="logo-badge">🚲</div>
+        <div class="logo-badge"><img src="{{ asset('images/logo.png') }}" alt="Gowesin"></div>
         <div class="brand-text">
             <h1>Gowesin Admin</h1>
             <span>Management Portal</span>

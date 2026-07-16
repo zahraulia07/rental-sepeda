@@ -76,10 +76,6 @@
         .input-icon-wrap input:focus { outline: none; border-color: #635BFF; box-shadow: 0 0 0 4px rgba(99, 91, 255, 0.12); background: #fff; }
         .toggle-eye { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 15px; opacity: 0.55; user-select: none; background: none; border: none; padding: 4px; }
 
-        .remember-row { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
-        .remember-row input[type="checkbox"] { width: 16px; height: 16px; accent-color: #635BFF; }
-        .remember-row label { font-size: 13px; color: #475569; cursor: pointer; }
-
         .btn-masuk {
             width: 100%; padding: 13px; border: none; border-radius: 12px; cursor: pointer;
             background: linear-gradient(135deg, #06B6D4 0%, #635BFF 55%, #A855F7 100%); color: #fff;
@@ -154,11 +150,6 @@
                         <input type="password" name="password" id="passwordInput" required placeholder="Masukkan password" style="padding-right: 40px;">
                         <button type="button" class="toggle-eye" onclick="togglePassword()">👁️</button>
                     </div>
-                </div>
-
-                <div class="remember-row">
-                    <input type="checkbox" name="remember" id="remember">
-                    <label for="remember">Ingat Saya</label>
                 </div>
 
                 <button type="submit" class="btn-masuk">MASUK →</button>
