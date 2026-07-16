@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -14,8 +15,21 @@ class ProfileController extends Controller
     // Menampilkan halaman "Profil Saya" (edit profil + ganti password)
     public function edit()
     {
+        $daftarNotifikasi = DB::table('notifikasis')
+            ->where('user_id', Auth::id())
+            ->orderByDesc('created_at')
+            ->limit(10)
+            ->get();
+
+        $jumlahNotifBelumDibaca = DB::table('notifikasis')
+            ->where('user_id', Auth::id())
+            ->where('dibaca', false)
+            ->count();
+
         return view('user.profile', [
             'user' => Auth::user(),
+            'daftarNotifikasi' => $daftarNotifikasi,
+            'jumlahNotifBelumDibaca' => $jumlahNotifBelumDibaca,
         ]);
     }
 
@@ -35,6 +49,7 @@ class ProfileController extends Controller
             'no_hp' => ['required', 'string', 'max:20'],
             'alamat' => ['required', 'string'],
             'foto_profil' => ['nullable', 'image', 'max:2048'],
+            'hapus_foto' => ['nullable', 'boolean'],
         ]);
 
         if ($request->hasFile('foto_profil')) {
@@ -42,7 +57,11 @@ class ProfileController extends Controller
                 Storage::disk('public')->delete($user->foto_profil);
             }
             $validated['foto_profil'] = $request->file('foto_profil')->store('profil', 'public');
+        } elseif ($request->boolean('hapus_foto') && $user->foto_profil) {
+            Storage::disk('public')->delete($user->foto_profil);
+            $validated['foto_profil'] = null;
         }
+        unset($validated['hapus_foto']);
 
         $user->update($validated);
 
