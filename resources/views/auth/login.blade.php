@@ -29,10 +29,20 @@
         .panel-hero::after { width: 300px; height: 300px; bottom: -100px; left: -80px; background: rgba(255,255,255,0.08); }
 
         .brand-mark { display: flex; align-items: center; gap: 10px; position: relative; z-index: 2; }
-        .brand-mark .bike-icon { font-size: 26px; }
+        .brand-mark .logo-img { width: 32px; height: 32px; border-radius: 9px; object-fit: cover; display: block; }
         .brand-mark .brand-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; color: #fff; letter-spacing: -0.3px; }
 
-        .hero-illustration { position: relative; z-index: 2; text-align: center; font-size: 150px; line-height: 1; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15)); }
+        .hero-illustration {
+            position: relative; z-index: 2; text-align: center;
+            width: 100%; max-width: 420px; aspect-ratio: 1 / 1; margin: 0 auto;
+        }
+        .hero-illustration img {
+            width: 100%; height: 100%; object-fit: cover; border-radius: 28px;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
+            /* memudar di sisi kanan foto, menyatu ke panel gradasi di belakangnya */
+            -webkit-mask-image: linear-gradient(to right, #000 55%, transparent 100%);
+                    mask-image: linear-gradient(to right, #000 55%, transparent 100%);
+        }
 
         .hero-copy { position: relative; z-index: 2; color: #fff; }
         .hero-copy h1 { font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700; line-height: 1.25; margin: 0 0 12px; letter-spacing: -0.4px; }
@@ -47,8 +57,9 @@
             width: 54px; height: 54px; border-radius: 16px; margin: 0 auto 14px;
             background: linear-gradient(135deg, #06B6D4 0%, #635BFF 55%, #A855F7 100%);
             display: flex; align-items: center; justify-content: center; font-size: 26px;
-            box-shadow: 0 10px 22px -6px rgba(99, 91, 255, 0.45);
+            box-shadow: 0 10px 22px -6px rgba(99, 91, 255, 0.45); overflow: hidden;
         }
+        .form-brand .badge-icon img { width: 100%; height: 100%; object-fit: cover; }
         .form-brand h2 { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; margin: 0 0 6px; color: #10131C; }
         .form-brand p { font-size: 13.5px; color: #6B7280; margin: 0; }
 
@@ -95,11 +106,13 @@
 
 <div class="panel-hero">
     <div class="brand-mark">
-        <span class="bike-icon">🚲</span>
+        <img src="{{ asset('images/logo.png') }}" alt="Gowesin" class="logo-img">
         <span class="brand-name">Gowesin</span>
     </div>
 
-    <div class="hero-illustration">🚲</div>
+    <div class="hero-illustration">
+        <img src="{{ asset('images/hero-login.jpg') }}" alt="Gowesin">
+    </div>
 
     <div class="hero-copy">
         <h1>Temukan Kebebasan di Setiap Putaran Pedal.</h1>
@@ -110,7 +123,7 @@
 <div class="panel-form">
     <div class="form-wrap">
         <div class="form-brand">
-            <div class="badge-icon">🚲</div>
+            <div class="badge-icon"><img src="{{ asset('images/logo.png') }}" alt="Gowesin"></div>
             <h2>Gowesin</h2>
             <p>Selamat datang kembali! Silakan masuk ke akun Anda.</p>
         </div>

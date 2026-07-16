@@ -41,6 +41,7 @@
         .navbar-inner { max-width: 1120px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; gap: 22px; }
         .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; color: var(--ink); font-size: 17px; text-decoration: none; flex-shrink: 0; }
         .brand .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--gradient); }
+        .brand .logo-img { width: 28px; height: 28px; border-radius: 8px; object-fit: cover; display: block; }
         .nav-links { display: flex; align-items: center; gap: 22px; font-size: 13.5px; font-weight: 700; color: var(--muted); flex: 1; }
         .nav-links a { text-decoration: none; color: var(--muted); padding: 6px 2px; border-bottom: 2px solid transparent; transition: all 0.15s; }
         .nav-links a:hover, .nav-links a.active { color: var(--ink); border-bottom-color: var(--green); }
@@ -120,6 +121,7 @@
         .hero-photo::before { content: ""; position: absolute; top: -60px; right: -50px; width: 220px; height: 220px; background: rgba(255,255,255,0.14); border-radius: 50%; }
         .hero-photo::after { content: ""; position: absolute; bottom: -80px; left: -40px; width: 200px; height: 200px; background: rgba(255,255,255,0.10); border-radius: 50%; }
         .hero-photo .emoji { font-size: 120px; position: relative; z-index: 1; filter: drop-shadow(0 12px 18px rgba(0,0,0,0.18)); }
+        .hero-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; position: relative; z-index: 1; }
         .hero-float {
             position: absolute; left: 24px; bottom: -22px; z-index: 2;
             background: #fff; border-radius: 16px; padding: 12px 18px 12px 14px; display: flex; align-items: center; gap: 12px;
@@ -284,7 +286,7 @@
 
 <nav class="navbar">
     <div class="navbar-inner">
-        <a href="#beranda" class="brand"><span class="dot"></span> Gowesin</a>
+        <a href="#beranda" class="brand"><img src="{{ asset('images/logo.png') }}" alt="Gowesin" class="logo-img"> Gowesin</a>
         <div class="nav-links">
             <a href="#beranda" class="active">Beranda</a>
             <a href="#katalog">Katalog Sepeda</a>
@@ -346,7 +348,7 @@
         </div>
         <div class="hero-visual">
             <div class="hero-photo">
-                <span class="emoji">🚲</span>
+                <img src="{{ asset('images/hero-dashboard.jpg') }}" alt="Gowesin">
             </div>
             @php $sepedaUnggulan = $sepedaTersedia->first(); @endphp
             <div class="hero-float">
@@ -558,7 +560,7 @@
     <div class="wrap">
         <div class="footer-grid">
             <div class="footer-brand">
-                <div class="brand"><span class="dot"></span> Gowesin</div>
+                <div class="brand"><img src="{{ asset('images/logo.png') }}" alt="Gowesin" class="logo-img"> Gowesin</div>
                 <p>&copy; {{ date('Y') }} Gowesin. Urban Mobility &amp; Freshness. Menghadirkan kesegaran di setiap kayuhan Anda.</p>
             </div>
             <div class="footer-cols">
