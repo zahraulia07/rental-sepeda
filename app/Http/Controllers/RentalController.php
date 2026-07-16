@@ -8,6 +8,28 @@ use Illuminate\Support\Facades\DB;
 
 class RentalController extends Controller
 {
+    // Kirim notifikasi ke SEMUA akun admin
+    private function notifikasiAdmin($judul, $pesan, $idPenyewaan = null)
+    {
+        $adminIds = DB::table('users')->where('role', 'admin')->pluck('id');
+
+        $baris = $adminIds->map(function ($adminId) use ($judul, $pesan, $idPenyewaan) {
+            return [
+                'user_id' => $adminId,
+                'id_penyewaan' => $idPenyewaan,
+                'judul' => $judul,
+                'pesan' => $pesan,
+                'dibaca' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        })->toArray();
+
+        if (!empty($baris)) {
+            DB::table('notifikasis')->insert($baris);
+        }
+    }
+
     // Dashboard user: katalog sepeda (semua status) + riwayat sewa milik user yang login
     public function index(Request $request)
     {
@@ -76,7 +98,7 @@ class RentalController extends Controller
         $hargaSatuan = $validated['jenis_sewa'] === 'per_jam' ? $sepeda->harga_per_jam : $sepeda->harga_per_hari;
         $totalBiaya = $hargaSatuan * $validated['durasi'];
 
-        DB::table('penyewaans')->insert([
+        $idPenyewaan = DB::table('penyewaans')->insertGetId([
             'user_id' => Auth::id(),
             'id_sepeda' => $id,
             'jenis_sewa' => $validated['jenis_sewa'],
@@ -88,9 +110,16 @@ class RentalController extends Controller
             'setuju_syarat' => true,
             'created_at' => now(),
             'updated_at' => now(),
-        ]);
+        ], 'id_penyewaan');
 
         DB::table('sepeda')->where('id_sepeda', $id)->decrement('stok');
+
+        $satuan = $validated['jenis_sewa'] === 'per_jam' ? 'jam' : 'hari';
+        $this->notifikasiAdmin(
+            'Pengajuan Sewa Baru',
+            Auth::user()->name . ' mengajukan sewa "' . $sepeda->tipe . '" selama ' . $validated['durasi'] . ' ' . $satuan . '. Menunggu persetujuan.',
+            $idPenyewaan
+        );
 
         return redirect('/dashboard')->with('sukses', 'Pengajuan sewa "' . $sepeda->tipe . '" berhasil dikirim. Menunggu persetujuan admin.');
     }
@@ -116,6 +145,13 @@ class RentalController extends Controller
             'status_pembayaran' => 'Sudah Dibayar',
             'updated_at' => now(),
         ]);
+
+        $sepeda = DB::table('sepeda')->where('id_sepeda', $penyewaan->id_sepeda)->first();
+        $this->notifikasiAdmin(
+            'Pembayaran Masuk',
+            Auth::user()->name . ' telah membayar sewa "' . ($sepeda->tipe ?? '-') . '" sebesar Rp ' . number_format($penyewaan->total_biaya, 0, ',', '.') . '.',
+            $id
+        );
 
         return back()->with('sukses', 'Pembayaran berhasil dikonfirmasi.');
     }
