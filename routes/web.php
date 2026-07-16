@@ -30,6 +30,12 @@ Route::get('/', function () {
     return redirect(auth()->user()->role === 'admin' ? '/admin/sepeda' : '/dashboard');
 })->middleware('auth');
 
+// Notifikasi: dipakai admin MAUPUN user, jadi ditaruh terpisah dari grup role:admin / role:user
+Route::middleware('auth')->group(function () {
+    Route::post('/notifikasi/tandai-dibaca', [NotificationController::class, 'tandaiDibaca']);
+    Route::get('/notifikasi/{id}/buka', [NotificationController::class, 'bukaTransaksi']);
+});
+
 // Dashboard Admin (khusus role admin)
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     // Inventaris sepeda
@@ -80,7 +86,4 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/syarat-ketentuan', [InfoController::class, 'syaratKetentuan']);
     Route::get('/panduan', [InfoController::class, 'panduan']);
     Route::get('/tentang-kami', [InfoController::class, 'tentangKami']);
-
-    // Notifikasi: tandai semua sudah dibaca (dipanggil saat dropdown lonceng dibuka)
-    Route::post('/notifikasi/tandai-dibaca', [NotificationController::class, 'tandaiDibaca']);
 });

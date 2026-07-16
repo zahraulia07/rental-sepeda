@@ -122,7 +122,7 @@
         <div class="admin-notif-dropdown" id="adminNotifDropdown">
             <div class="notif-dropdown-head">🔔 Notifikasi</div>
             @forelse($daftarNotifikasiAdmin as $notif)
-                <a href="/admin/transaksi" class="notif-item {{ $notif->dibaca ? '' : 'unread' }}">
+                <a href="/notifikasi/{{ $notif->id_notifikasi }}/buka" class="notif-item {{ $notif->dibaca ? '' : 'unread' }}">
                     <div class="notif-judul">{{ $notif->judul }}</div>
                     <div class="notif-msg">{{ $notif->pesan }}</div>
                     <div class="notif-time">{{ \Carbon\Carbon::parse($notif->created_at)->diffForHumans() }}</div>
@@ -169,6 +169,7 @@
 
             fetch('/notifikasi/tandai-dibaca', {
                 method: 'POST',
+                keepalive: true,
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     'Accept': 'application/json',

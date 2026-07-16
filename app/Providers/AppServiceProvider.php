@@ -35,9 +35,13 @@ class AppServiceProvider extends ServiceProvider
                     ->limit(10)
                     ->get();
 
+                // Badge dihitung per TRANSAKSI (id_penyewaan) yang belum dibaca,
+                // bukan jumlah baris notifikasi mentah (1 transaksi bisa punya 2+ notif).
                 $jumlahNotifBelumDibacaAdmin = DB::table('notifikasis')
                     ->where('user_id', Auth::id())
                     ->where('dibaca', false)
+                    ->pluck('id_penyewaan')
+                    ->unique()
                     ->count();
             }
 
