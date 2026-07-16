@@ -15,4 +15,10 @@ class InfoController extends Controller
     {
         return view('user.panduan');
     }
+
+    // Halaman Tentang Kami
+    public function tentangKami()
+    {
+        return view('user.tentang-kami');
+    }
 }

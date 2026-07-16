@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Beranda - Rental Sepeda</title>
     <style>
         * { box-sizing: border-box; }
@@ -52,11 +53,37 @@
         }
         .nav-search input { border: none; background: transparent; outline: none; font-size: 13px; width: 100%; color: var(--ink); }
         .nav-right { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+        .nav-bell-wrap { position: relative; }
         .nav-bell {
             width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); background: #fff;
-            display: flex; align-items: center; justify-content: center; position: relative; cursor: default; font-size: 15px;
+            display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; font-size: 15px;
+            transition: all 0.15s ease;
         }
+        .nav-bell:hover { box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08); }
         .nav-bell .ping { position: absolute; top: 8px; right: 9px; width: 7px; height: 7px; border-radius: 50%; background: #ef4444; border: 1.5px solid #fff; }
+        .notif-badge {
+            position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; padding: 0 4px;
+            border-radius: 999px; background: #ef4444; color: #fff; font-size: 10.5px; font-weight: 800;
+            display: flex; align-items: center; justify-content: center; border: 1.5px solid #fff;
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
+        }
+        .notif-dropdown {
+            position: absolute; top: calc(100% + 12px); right: 0; z-index: 60;
+            width: 320px; max-height: 380px; overflow-y: auto;
+            background: #fff; border: 1px solid var(--border); border-radius: 18px;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16); padding: 8px;
+            opacity: 0; visibility: hidden; transform: translateY(-8px);
+            transition: all 0.18s ease;
+        }
+        .nav-bell-wrap.open .notif-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+        .notif-dropdown-head { padding: 8px 10px 10px; font-size: 13px; font-weight: 800; color: var(--ink); border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+        .notif-item { padding: 10px 10px; border-radius: 12px; margin-bottom: 2px; }
+        .notif-item.unread { background: #f0fdfa; }
+        .notif-item .notif-judul { font-size: 12.5px; font-weight: 800; color: var(--ink); margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
+        .notif-item.unread .notif-judul::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+        .notif-item .notif-msg { font-size: 12px; color: var(--slate); line-height: 1.5; }
+        .notif-item .notif-time { font-size: 10.5px; color: var(--faint); margin-top: 4px; font-weight: 700; text-transform: uppercase; }
+        .notif-empty { padding: 26px 10px; text-align: center; font-size: 12.5px; color: var(--faint); }
         .nav-avatar-wrap { position: relative; }
         .nav-avatar {
             width: 38px; height: 38px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
@@ -291,14 +318,33 @@
             <a href="#beranda" class="active">Beranda</a>
             <a href="#katalog">Katalog Sepeda</a>
             <a href="#riwayat">Riwayat Sewa</a>
-            <a href="/panduan">Tentang Kami</a>
+            <a href="/tentang-kami">Tentang Kami</a>
         </div>
         <form action="/dashboard" method="GET" class="nav-search">
             <span class="ic">🔍</span>
             <input type="text" name="cari" placeholder="Cari sepeda..." value="{{ request('cari') }}">
         </form>
         <div class="nav-right">
-            <span class="nav-bell" title="Notifikasi">🔔<span class="ping"></span></span>
+            <div class="nav-bell-wrap" id="navBellWrap">
+                <div class="nav-bell" onclick="toggleNotifDropdown(event)" title="Notifikasi">
+                    🔔
+                    @if($jumlahNotifBelumDibaca > 0)
+                        <span class="notif-badge" id="notifBadge">{{ $jumlahNotifBelumDibaca > 9 ? '9+' : $jumlahNotifBelumDibaca }}</span>
+                    @endif
+                </div>
+                <div class="notif-dropdown" id="notifDropdown">
+                    <div class="notif-dropdown-head">🔔 Notifikasi</div>
+                    @forelse($daftarNotifikasi as $notif)
+                        <div class="notif-item {{ $notif->dibaca ? '' : 'unread' }}">
+                            <div class="notif-judul">{{ $notif->judul }}</div>
+                            <div class="notif-msg">{{ $notif->pesan }}</div>
+                            <div class="notif-time">{{ \Carbon\Carbon::parse($notif->created_at)->diffForHumans() }}</div>
+                        </div>
+                    @empty
+                        <div class="notif-empty">Belum ada notifikasi.</div>
+                    @endforelse
+                </div>
+            </div>
             <div class="nav-avatar-wrap" id="navAvatarWrap">
                 <div class="nav-avatar" onclick="toggleUserNav(event)">
                     @if(Auth::user()->foto_profil)
@@ -318,6 +364,7 @@
                             ['url' => '/profile', 'match' => 'profile', 'icon' => '👤', 'label' => 'Profil Saya'],
                             ['url' => '/panduan', 'match' => 'panduan', 'icon' => '📖', 'label' => 'Panduan Cara Sewa'],
                             ['url' => '/syarat-ketentuan', 'match' => 'syarat-ketentuan', 'icon' => '📃', 'label' => 'Syarat & Ketentuan'],
+                            ['url' => '/tentang-kami', 'match' => 'tentang-kami', 'icon' => 'ℹ️', 'label' => 'Tentang Kami'],
                         ];
                     @endphp
                     @foreach($userMenuItems as $item)
@@ -663,6 +710,35 @@
         const wrap = document.getElementById('navAvatarWrap');
         if (wrap && !wrap.contains(event.target)) {
             wrap.classList.remove('open');
+        }
+    });
+
+    // Dropdown notifikasi: buka/tutup + tandai semua sudah dibaca begitu dropdown dibuka
+    function toggleNotifDropdown(event) {
+        event.stopPropagation();
+        const wrap = document.getElementById('navBellWrap');
+        const willOpen = !wrap.classList.contains('open');
+        wrap.classList.toggle('open');
+
+        if (willOpen) {
+            const badge = document.getElementById('notifBadge');
+            if (badge) badge.remove();
+
+            fetch('/notifikasi/tandai-dibaca', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json',
+                },
+            }).then(() => {
+                document.querySelectorAll('.notif-item.unread').forEach(el => el.classList.remove('unread'));
+            }).catch(() => {});
+        }
+    }
+    document.addEventListener('click', function (event) {
+        const bellWrap = document.getElementById('navBellWrap');
+        if (bellWrap && !bellWrap.contains(event.target)) {
+            bellWrap.classList.remove('open');
         }
     });
 

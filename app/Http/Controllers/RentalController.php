@@ -37,7 +37,19 @@ class RentalController extends Controller
             ->select('penyewaans.*', 'sepeda.tipe', 'sepeda.harga_per_jam', 'sepeda.harga_per_hari')
             ->get();
 
-        return view('user.dashboard', compact('sepedaTersedia', 'riwayatSewa', 'daftarKategori'));
+        // Notifikasi untuk lonceng di navbar: daftar terbaru + jumlah yang belum dibaca (badge)
+        $daftarNotifikasi = DB::table('notifikasis')
+            ->where('user_id', Auth::id())
+            ->orderByDesc('created_at')
+            ->limit(10)
+            ->get();
+
+        $jumlahNotifBelumDibaca = DB::table('notifikasis')
+            ->where('user_id', Auth::id())
+            ->where('dibaca', false)
+            ->count();
+
+        return view('user.dashboard', compact('sepedaTersedia', 'riwayatSewa', 'daftarKategori', 'daftarNotifikasi', 'jumlahNotifBelumDibaca'));
     }
 
     // Mengajukan sewa sepeda (masuk status Pending, menunggu approval admin)

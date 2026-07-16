@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminLaporanController;
 use App\Http\Controllers\AdminMaintenanceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InfoController;
+use App\Http\Controllers\NotificationController;
 
 // Jalur Autentikasi (hanya untuk tamu / belum login)
 Route::middleware('guest')->group(function () {
@@ -81,7 +82,11 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::put('/profile', [ProfileController::class, 'update']);
     Route::put('/profile/password', [ProfileController::class, 'updatePassword']);
 
-    // Informasi: syarat & ketentuan, panduan cara menyewa
+    // Informasi: syarat & ketentuan, panduan cara menyewa, tentang kami
     Route::get('/syarat-ketentuan', [InfoController::class, 'syaratKetentuan']);
     Route::get('/panduan', [InfoController::class, 'panduan']);
+    Route::get('/tentang-kami', [InfoController::class, 'tentangKami']);
+
+    // Notifikasi: tandai semua sudah dibaca (dipanggil saat dropdown lonceng dibuka)
+    Route::post('/notifikasi/tandai-dibaca', [NotificationController::class, 'tandaiDibaca']);
 });

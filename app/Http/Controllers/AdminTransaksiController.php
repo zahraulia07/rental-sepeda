@@ -11,6 +11,20 @@ class AdminTransaksiController extends Controller
     // Denda per jam keterlambatan (dipakai hanya sebagai fallback jika sepeda belum punya tarif sendiri)
     const DENDA_PER_JAM = 5000;
 
+    // Buat 1 notifikasi baru untuk seorang user (dipakai saat admin acc/tolak pengajuan sewa)
+    private function buatNotifikasi($userId, $idPenyewaan, $judul, $pesan)
+    {
+        DB::table('notifikasis')->insert([
+            'user_id' => $userId,
+            'id_penyewaan' => $idPenyewaan,
+            'judul' => $judul,
+            'pesan' => $pesan,
+            'dibaca' => false,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    }
+
     private function baseQuery()
     {
         return DB::table('penyewaans')
@@ -99,6 +113,14 @@ class AdminTransaksiController extends Controller
             'updated_at' => now(),
         ]);
 
+        $sepeda = DB::table('sepeda')->where('id_sepeda', $transaksi->id_sepeda)->first();
+        $this->buatNotifikasi(
+            $transaksi->user_id,
+            $id,
+            'Pengajuan Sewa Disetujui',
+            'Pengajuan sewa "' . ($sepeda->tipe ?? 'sepeda') . '" (#' . $id . ') telah disetujui admin. Silakan ambil sepeda di lokasi & selesaikan pembayaran sebelum batas waktu habis.'
+        );
+
         return back()->with('sukses', 'Pesanan #' . $id . ' berhasil disetujui.');
     }
 
@@ -117,6 +139,13 @@ class AdminTransaksiController extends Controller
         ]);
 
         DB::table('sepeda')->where('id_sepeda', $transaksi->id_sepeda)->increment('stok');
+
+        $sepeda = DB::table('sepeda')->where('id_sepeda', $transaksi->id_sepeda)->first();
+        $pesanTolak = 'Pengajuan sewa "' . ($sepeda->tipe ?? 'sepeda') . '" (#' . $id . ') ditolak admin.';
+        if ($request->catatan_admin) {
+            $pesanTolak .= ' Alasan: ' . $request->catatan_admin;
+        }
+        $this->buatNotifikasi($transaksi->user_id, $id, 'Pengajuan Sewa Ditolak', $pesanTolak);
 
         return back()->with('sukses', 'Pesanan #' . $id . ' ditolak, stok sepeda dikembalikan.');
     }

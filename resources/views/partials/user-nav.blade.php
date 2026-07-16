@@ -4,6 +4,7 @@
         ['url' => '/profile', 'match' => 'profile', 'icon' => '👤', 'label' => 'Profil Saya'],
         ['url' => '/panduan', 'match' => 'panduan', 'icon' => '📖', 'label' => 'Panduan Cara Sewa'],
         ['url' => '/syarat-ketentuan', 'match' => 'syarat-ketentuan', 'icon' => '📃', 'label' => 'Syarat & Ketentuan'],
+        ['url' => '/tentang-kami', 'match' => 'tentang-kami', 'icon' => '🚲', 'label' => 'Tentang Kami'],
     ];
     $userCurrentItem = collect($userMenuItems)->first(fn($item) => request()->is($item['match']));
 @endphp
