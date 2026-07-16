@@ -4,7 +4,6 @@
         ['url' => '/admin/pelanggan', 'match' => 'admin/pelanggan', 'icon' => '👥', 'label' => 'Kelola Pelanggan'],
         ['url' => '/admin/transaksi', 'match' => 'admin/transaksi', 'icon' => '📋', 'label' => 'Transaksi Aktif'],
         ['url' => '/admin/riwayat', 'match' => 'admin/riwayat', 'icon' => '📜', 'label' => 'Riwayat'],
-        ['url' => '/admin/pembayaran', 'match' => 'admin/pembayaran', 'icon' => '💳', 'label' => 'Pembayaran'],
         ['url' => '/admin/laporan', 'match' => 'admin/laporan', 'icon' => '💰', 'label' => 'Laporan Keuangan'],
         ['url' => '/admin/maintenance', 'match' => 'admin/maintenance', 'icon' => '🔧', 'label' => 'Maintenance'],
     ];

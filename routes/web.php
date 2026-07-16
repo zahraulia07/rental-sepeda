@@ -6,7 +6,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\AdminTransaksiController;
 use App\Http\Controllers\AdminPelangganController;
-use App\Http\Controllers\AdminPembayaranController;
 use App\Http\Controllers\AdminLaporanController;
 use App\Http\Controllers\AdminMaintenanceController;
 use App\Http\Controllers\ProfileController;
@@ -53,11 +52,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/pelanggan', [AdminPelangganController::class, 'index']);
     Route::post('/pelanggan/{id}/blokir', [AdminPelangganController::class, 'blokir']);
     Route::post('/pelanggan/{id}/buka-blokir', [AdminPelangganController::class, 'bukaBlokir']);
-
-    // Verifikasi pembayaran
-    Route::get('/pembayaran', [AdminPembayaranController::class, 'index']);
-    Route::post('/pembayaran/{id}/verifikasi', [AdminPembayaranController::class, 'verifikasi']);
-    Route::post('/pembayaran/{id}/tolak', [AdminPembayaranController::class, 'tolak']);
 
     // Laporan & rekap pendapatan
     Route::get('/laporan', [AdminLaporanController::class, 'index']);
