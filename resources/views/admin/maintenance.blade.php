@@ -6,45 +6,70 @@
     <title>Log Maintenance - Rental Sepeda</title>
     <style>
         * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%); color: #1e293b; }
-        .container { max-width: 1100px; margin: auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0px 10px 30px rgba(15, 23, 42, 0.06); border: 1px solid #e2e8f0; }
-        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 13px; color: #64748b; }
-        .topbar .role-badge { background: #d1fae5; color: #047857; font-weight: 700; padding: 2px 8px; border-radius: 4px; font-size: 11px; text-transform: uppercase; margin-left: 6px; }
-        .btn-logout { background: transparent; color: #ef4444; border: 1px solid #fecaca; padding: 6px 14px; border-radius: 6px; font-size: 13px; cursor: pointer; }
-        .header-wrapper { display: flex; flex-direction: column; align-items: center; border-bottom: 3px solid #f1f5f9; padding-bottom: 20px; margin-bottom: 25px; }
-        h2 { margin: 0 0 15px; font-size: 24px; color: #0f172a; text-align: center; }
-        .alert { padding: 12px; background-color: #f0fdf4; color: #15803d; border-radius: 6px; margin-bottom: 20px; font-size: 14px; border-left: 5px solid #10b981; }
-        .alert-gagal { padding: 12px; background-color: #fef2f2; color: #b91c1c; border-radius: 6px; margin-bottom: 20px; font-size: 14px; border-left: 5px solid #ef4444; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 40px 24px;
+            background-color: #f4f8fb;
+            background-image:
+                radial-gradient(circle at 8% 8%, rgba(99, 102, 241, 0.14), transparent 32%),
+                radial-gradient(circle at 92% 18%, rgba(139, 92, 246, 0.14), transparent 34%),
+                radial-gradient(circle at 50% 95%, rgba(16, 185, 129, 0.08), transparent 38%);
+            background-attachment: fixed;
+            color: #1e293b;
+        }
+        .container { max-width: 1100px; margin: auto; background: #fff; padding: 32px; border-radius: 24px; box-shadow: 0px 14px 40px rgba(15, 23, 42, 0.07); border: 1px solid #eef2f7; }
 
-        button { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .btn-trigger { background-color: #10b981; color: white; font-size: 14px; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25); }
-        .btn-trigger:hover { background-color: #059669; }
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 13px; color: #64748b; }
+        .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; color: #0f172a; font-size: 15px; }
+        .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+        .topbar .role-badge { background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #6d28d9; font-weight: 700; padding: 3px 10px; border-radius: 999px; font-size: 11px; text-transform: uppercase; margin-left: 6px; }
+        .btn-logout { background: #fff; color: #ef4444; border: 1px solid #fecaca; padding: 8px 16px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700; transition: all 0.15s; }
+        .btn-logout:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #e2e8f0; text-align: left; padding: 12px; font-size: 13px; }
-        th { background-color: #f8fafc; color: #64748b; font-weight: 600; }
+        .header-wrapper { display: flex; flex-direction: column; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 22px; margin-bottom: 24px; }
+        h2 { margin: 0 0 16px; font-size: 22px; color: #0f172a; text-align: center; }
+        .alert { padding: 13px 16px; background-color: #ecfdf5; color: #047857; border-radius: 12px; margin-bottom: 20px; font-size: 14px; border: 1px solid #a7f3d0; font-weight: 600; }
+        .alert-gagal { padding: 13px 16px; background-color: #fef2f2; color: #b91c1c; border-radius: 12px; margin-bottom: 20px; font-size: 14px; border: 1px solid #fecaca; font-weight: 600; }
+
+        button { border: none; border-radius: 999px; cursor: pointer; font-weight: 700; transition: all 0.2s; }
+        .btn-trigger {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; font-size: 14px; padding: 12px 24px;
+            box-shadow: 0 10px 22px rgba(99, 102, 241, 0.30);
+        }
+        .btn-trigger:hover { transform: translateY(-1px); box-shadow: 0 14px 26px rgba(99, 102, 241, 0.38); }
+
+        .table-wrapper { overflow-x: auto; border-radius: 16px; border: 1px solid #eef2f7; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 13px 14px; font-size: 13px; border-bottom: 1px solid #f1f5f9; }
+        th { background-color: #f8fafc; color: #64748b; font-weight: 700; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.4px; }
         td { background-color: #fff; color: #1e293b; }
+        tbody tr:last-child td { border-bottom: none; }
 
-        .status-badge { font-weight: bold; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
-        .status-proses { color: #b45309; background-color: #fef3c7; border: 1px solid #fde68a; }
-        .status-selesai { color: #047857; background-color: #d1fae5; border: 1px solid #a7f3d0; }
-        .btn-aksi { padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px; background: #0ea5e9; color: #fff; }
-        .empty-state { text-align: center; color: #94a3b8; padding: 30px 0; font-size: 14px; }
+        .status-badge { font-weight: 700; padding: 4px 12px; border-radius: 999px; font-size: 12px; }
+        .status-proses { color: #b45309; background-color: #fef3c7; }
+        .status-selesai { color: #047857; background-color: #d1fae5; }
+        .btn-aksi { padding: 8px 14px; font-size: 12.5px; background: #0ea5e9; color: #fff; }
+        .empty-state { text-align: center; color: #94a3b8; padding: 40px 0; font-size: 14px; }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.4); display: none; justify-content: center; align-items: center; z-index: 9999; }
-        .modal-box { background: #fff; padding: 26px; border-radius: 10px; width: 100%; max-width: 460px; border: 1px solid #e2e8f0; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.45); display: none; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(4px); }
+        .modal-box { background: #fff; padding: 26px 28px; border-radius: 20px; width: 100%; max-width: 460px; max-height: 88vh; overflow-y: auto; border: 1px solid #eef2f7; box-shadow: 0 20px 50px rgba(15,23,42,0.18); }
+        .modal-box h3 { margin-top: 0; font-size: 18px; color: #0f172a; border-bottom: 2px solid #f1f5f9; padding-bottom: 14px; }
         .form-group { margin-bottom: 14px; }
-        label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #475569; }
-        input, select, textarea { width: 100%; padding: 9px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; box-sizing: border-box; }
-        small.hint { display: block; margin-top: 4px; font-size: 12px; color: #94a3b8; }
-        .btn-simpan { background: #10b981; color: #fff; width: 100%; padding: 10px; border: none; border-radius: 6px; font-weight: bold; margin-top: 4px; }
-        .btn-batal { background: #f1f5f9; color: #475569; width: 100%; padding: 9px; border: none; border-radius: 6px; margin-top: 8px; }
+        label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 13px; color: #475569; }
+        input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 13.5px; box-sizing: border-box; font-family: inherit; background: #f8fafc; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 4px rgba(99,102,241,0.12); background: #fff; }
+        small.hint { display: block; margin-top: 5px; font-size: 12px; color: #94a3b8; }
+        .btn-simpan { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; width: 100%; padding: 12px; border: none; border-radius: 999px; font-weight: 700; margin-top: 6px; box-shadow: 0 10px 22px rgba(99,102,241,0.30); }
+        .btn-simpan:hover { transform: translateY(-1px); }
+        .btn-batal { background: #f1f5f9; color: #475569; width: 100%; padding: 11px; border: none; border-radius: 999px; margin-top: 8px; font-weight: 700; }
+        .btn-batal:hover { background: #e2e8f0; color: #0f172a; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="topbar">
+        <div class="brand"><span class="dot"></span> BikeRent Admin</div>
         <div>Masuk sebagai <b>{{ Auth::user()->name }}</b><span class="role-badge">{{ Auth::user()->role }}</span></div>
         <form action="/logout" method="POST" onsubmit="return confirm('Keluar dari sistem?')">
             @csrf
@@ -69,6 +94,7 @@
     @if($logMaintenance->isEmpty())
         <div class="empty-state">Belum ada catatan maintenance.</div>
     @else
+    <div class="table-wrapper">
         <table>
             <thead>
                 <tr>
@@ -79,7 +105,7 @@
                     <th>Biaya</th>
                     <th>Catatan</th>
                     <th>Status</th>
-                    <th style="width: 120px;">Aksi</th>
+                    <th style="width: 130px;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -108,12 +134,13 @@
                 @endforeach
             </tbody>
         </table>
+    </div>
     @endif
 </div>
 
 <div class="modal-overlay" id="modalTambah">
     <div class="modal-box">
-        <h3 style="margin-top:0;">Catat Kerusakan / Servis Baru</h3>
+        <h3>Catat Kerusakan / Servis Baru</h3>
         <form action="/admin/maintenance" method="POST">
             @csrf
             <div class="form-group">

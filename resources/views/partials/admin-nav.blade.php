@@ -1,12 +1,19 @@
 <style>
-    .admin-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-    .admin-nav a {
-        text-decoration: none; font-size: 13px; font-weight: 600; color: #475569;
-        background: #f1f5f9; padding: 8px 14px; border-radius: 8px; border: 1px solid #e2e8f0;
-        transition: all 0.15s;
+    .admin-nav {
+        display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;
+        padding: 8px; background: #f8fafc; border-radius: 18px; border: 1px solid #eef2f7;
     }
-    .admin-nav a:hover { background: #e2e8f0; color: #0f172a; }
-    .admin-nav a.active { background: #10b981; color: #fff; border-color: #10b981; }
+    .admin-nav a {
+        text-decoration: none; font-size: 13.5px; font-weight: 700; color: #64748b;
+        background: transparent; padding: 10px 18px; border-radius: 14px; border: 1px solid transparent;
+        transition: all 0.2s ease; letter-spacing: 0.1px;
+    }
+    .admin-nav a:hover { background: #ffffff; color: #0f172a; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06); }
+    .admin-nav a.active {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: #fff; border-color: transparent;
+        box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35);
+    }
 </style>
 <div class="admin-nav">
     <a href="/admin/sepeda" class="{{ request()->is('admin/sepeda') ? 'active' : '' }}">🚲 Inventaris Sepeda</a>

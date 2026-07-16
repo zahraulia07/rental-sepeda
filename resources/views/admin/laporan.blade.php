@@ -6,36 +6,58 @@
     <title>Laporan Pendapatan - Rental Sepeda</title>
     <style>
         * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%); color: #1e293b; }
-        .container { max-width: 1100px; margin: auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0px 10px 30px rgba(15, 23, 42, 0.06); border: 1px solid #e2e8f0; }
-        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 13px; color: #64748b; }
-        .topbar .role-badge { background: #d1fae5; color: #047857; font-weight: 700; padding: 2px 8px; border-radius: 4px; font-size: 11px; text-transform: uppercase; margin-left: 6px; }
-        .btn-logout { background: transparent; color: #ef4444; border: 1px solid #fecaca; padding: 6px 14px; border-radius: 6px; font-size: 13px; cursor: pointer; }
-        h2 { text-align: center; font-size: 24px; color: #0f172a; border-bottom: 3px solid #f1f5f9; padding-bottom: 20px; margin-bottom: 20px; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 40px 24px;
+            background-color: #f4f8fb;
+            background-image:
+                radial-gradient(circle at 8% 8%, rgba(99, 102, 241, 0.14), transparent 32%),
+                radial-gradient(circle at 92% 18%, rgba(139, 92, 246, 0.14), transparent 34%),
+                radial-gradient(circle at 50% 95%, rgba(16, 185, 129, 0.08), transparent 38%);
+            background-attachment: fixed;
+            color: #1e293b;
+        }
+        .container { max-width: 1100px; margin: auto; background: #fff; padding: 32px; border-radius: 24px; box-shadow: 0px 14px 40px rgba(15, 23, 42, 0.07); border: 1px solid #eef2f7; }
 
-        .periode-tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 24px; }
-        .periode-tabs a { text-decoration: none; padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; color: #475569; background: #f1f5f9; border: 1px solid #e2e8f0; }
-        .periode-tabs a.active { background: #0f172a; color: #fff; border-color: #0f172a; }
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 13px; color: #64748b; }
+        .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; color: #0f172a; font-size: 15px; }
+        .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+        .topbar .role-badge { background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #6d28d9; font-weight: 700; padding: 3px 10px; border-radius: 999px; font-size: 11px; text-transform: uppercase; margin-left: 6px; }
+        .btn-logout { background: #fff; color: #ef4444; border: 1px solid #fecaca; padding: 8px 16px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700; transition: all 0.15s; }
+        .btn-logout:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
 
-        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 26px; }
-        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 18px; }
-        .stat-card .label { font-size: 12px; color: #64748b; text-transform: uppercase; font-weight: 600; }
-        .stat-card .value { font-size: 22px; font-weight: 700; color: #0f172a; margin-top: 6px; }
-        .stat-card.highlight { background: #ecfdf5; border-color: #a7f3d0; }
-        .stat-card.highlight .value { color: #047857; }
+        h2 { text-align: center; font-size: 22px; color: #0f172a; border-bottom: 2px solid #f1f5f9; padding-bottom: 22px; margin: 0 0 24px; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #e2e8f0; text-align: left; padding: 12px; font-size: 13px; }
-        th { background-color: #f8fafc; color: #64748b; font-weight: 600; }
+        .periode-tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 26px; background: #f8fafc; padding: 6px; border-radius: 999px; border: 1px solid #eef2f7; max-width: 420px; margin-left: auto; margin-right: auto; }
+        .periode-tabs a { text-decoration: none; padding: 9px 20px; border-radius: 999px; font-size: 13px; font-weight: 700; color: #64748b; flex: 1; text-align: center; transition: all 0.2s; }
+        .periode-tabs a:hover { color: #0f172a; }
+        .periode-tabs a.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; box-shadow: 0 8px 18px rgba(99,102,241,0.30); }
+
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin-bottom: 28px; }
+        .stat-card { background: #f8fafc; border: 1px solid #eef2f7; border-radius: 18px; padding: 20px; position: relative; overflow: hidden; }
+        .stat-card .ico { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px; background: #e0e7ff; }
+        .stat-card .label { font-size: 12px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.3px; }
+        .stat-card .value { font-size: 22px; font-weight: 800; color: #0f172a; margin-top: 6px; }
+        .stat-card.highlight { background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%); border-color: transparent; }
+        .stat-card.highlight .ico { background: rgba(255,255,255,0.22); }
+        .stat-card.highlight .label { color: rgba(255,255,255,0.85); }
+        .stat-card.highlight .value { color: #fff; }
+
+        .table-wrapper { overflow-x: auto; border-radius: 16px; border: 1px solid #eef2f7; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 13px 14px; font-size: 13px; border-bottom: 1px solid #f1f5f9; }
+        th { background-color: #f8fafc; color: #64748b; font-weight: 700; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.4px; }
         td { background-color: #fff; color: #1e293b; }
+        tbody tr:last-child td { border-bottom: none; }
         .denda-tag { color: #dc2626; font-weight: 700; }
-        .empty-state { text-align: center; color: #94a3b8; padding: 30px 0; font-size: 14px; }
+        .empty-state { text-align: center; color: #94a3b8; padding: 40px 0; font-size: 14px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="topbar">
+        <div class="brand"><span class="dot"></span> BikeRent Admin</div>
         <div>Masuk sebagai <b>{{ Auth::user()->name }}</b><span class="role-badge">{{ Auth::user()->role }}</span></div>
         <form action="/logout" method="POST" onsubmit="return confirm('Keluar dari sistem?')">
             @csrf
@@ -55,18 +77,22 @@
 
     <div class="stat-grid">
         <div class="stat-card">
+            <div class="ico">📦</div>
             <div class="label">Jumlah Transaksi Selesai</div>
             <div class="value">{{ $jumlahTransaksi }}</div>
         </div>
         <div class="stat-card">
+            <div class="ico">🚲</div>
             <div class="label">Pendapatan Sewa</div>
             <div class="value">Rp {{ number_format($totalSewa, 0, ',', '.') }}</div>
         </div>
         <div class="stat-card">
+            <div class="ico">⏱️</div>
             <div class="label">Pendapatan Denda</div>
             <div class="value">Rp {{ number_format($totalDenda, 0, ',', '.') }}</div>
         </div>
         <div class="stat-card highlight">
+            <div class="ico">💰</div>
             <div class="label">Total Pendapatan</div>
             <div class="value">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</div>
         </div>
@@ -75,6 +101,7 @@
     @if($transaksiSelesai->isEmpty())
         <div class="empty-state">Belum ada transaksi selesai pada periode ini.</div>
     @else
+    <div class="table-wrapper">
         <table>
             <thead>
                 <tr>
@@ -105,6 +132,7 @@
                 @endforeach
             </tbody>
         </table>
+    </div>
     @endif
 </div>
 

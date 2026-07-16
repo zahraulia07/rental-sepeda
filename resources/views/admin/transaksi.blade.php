@@ -6,49 +6,89 @@
     <title>Manajemen Transaksi - Rental Sepeda</title>
     <style>
         * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%); color: #1e293b; }
-        .container { max-width: 1200px; margin: auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0px 10px 30px rgba(15, 23, 42, 0.06); border: 1px solid #e2e8f0; }
-        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 13px; color: #64748b; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 40px 24px;
+            background-color: #f4f8fb;
+            background-image:
+                radial-gradient(circle at 8% 8%, rgba(99, 102, 241, 0.14), transparent 32%),
+                radial-gradient(circle at 92% 18%, rgba(139, 92, 246, 0.14), transparent 34%),
+                radial-gradient(circle at 50% 95%, rgba(16, 185, 129, 0.08), transparent 38%);
+            background-attachment: fixed;
+            color: #1e293b;
+        }
+        .container { max-width: 1220px; margin: auto; background: #fff; padding: 32px; border-radius: 24px; box-shadow: 0px 14px 40px rgba(15, 23, 42, 0.07); border: 1px solid #eef2f7; }
+
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 13px; color: #64748b; }
+        .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; color: #0f172a; font-size: 15px; }
+        .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); }
         .topbar .user-info b { color: #0f172a; }
-        .topbar .role-badge { background: #d1fae5; color: #047857; font-weight: 700; padding: 2px 8px; border-radius: 4px; font-size: 11px; text-transform: uppercase; margin-left: 6px; }
-        .btn-logout { background: transparent; color: #ef4444; border: 1px solid #fecaca; padding: 6px 14px; border-radius: 6px; font-size: 13px; cursor: pointer; }
-        .btn-logout:hover { background: #fef2f2; }
-        h2 { text-align: center; font-size: 24px; color: #0f172a; border-bottom: 3px solid #f1f5f9; padding-bottom: 20px; margin-bottom: 20px; }
-        .alert { padding: 12px; background-color: #f0fdf4; color: #15803d; border-radius: 6px; margin-bottom: 20px; font-size: 14px; border-left: 5px solid #10b981; }
-        .alert-gagal { padding: 12px; background-color: #fef2f2; color: #b91c1c; border-radius: 6px; margin-bottom: 20px; font-size: 14px; border-left: 5px solid #ef4444; }
+        .topbar .role-badge { background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #6d28d9; font-weight: 700; padding: 3px 10px; border-radius: 999px; font-size: 11px; text-transform: uppercase; margin-left: 6px; }
+        .btn-logout { background: #fff; color: #ef4444; border: 1px solid #fecaca; padding: 8px 16px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700; transition: all 0.15s; }
+        .btn-logout:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
 
-        .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 18px; padding: 14px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; }
-        .filter-bar select, .filter-bar input[type="text"] { padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; background: #fff; }
-        .filter-bar .btn-filter { background: #0f172a; color: #fff; padding: 8px 16px; font-size: 13px; border-radius: 6px; border: none; cursor: pointer; }
-        .filter-bar .btn-reset { background: #f1f5f9; color: #475569; padding: 8px 16px; font-size: 13px; border-radius: 6px; text-decoration: none; }
+        h2 { text-align: center; font-size: 22px; color: #0f172a; border-bottom: 2px solid #f1f5f9; padding-bottom: 22px; margin: 0 0 24px; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #e2e8f0; text-align: left; padding: 12px; font-size: 13px; }
-        th { background-color: #f8fafc; color: #64748b; font-weight: 600; }
+        .alert { padding: 13px 16px; background-color: #ecfdf5; color: #047857; border-radius: 12px; margin-bottom: 20px; font-size: 14px; border: 1px solid #a7f3d0; font-weight: 600; }
+        .alert-gagal { padding: 13px 16px; background-color: #fef2f2; color: #b91c1c; border-radius: 12px; margin-bottom: 20px; font-size: 14px; border: 1px solid #fecaca; font-weight: 600; }
+
+        .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 20px; padding: 12px; background: #f8fafc; border-radius: 16px; border: 1px solid #eef2f7; }
+        .filter-bar select, .filter-bar input[type="text"] { padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 999px; font-size: 13px; background: #fff; }
+        .filter-bar input[type="text"] { flex: 1; min-width: 200px; }
+        .filter-bar .btn-filter { background: linear-gradient(135deg, #0f172a, #334155); color: #fff; padding: 10px 22px; font-size: 13px; border-radius: 999px; border: none; cursor: pointer; font-weight: 700; }
+        .filter-bar .btn-reset { background: #fff; color: #475569; border: 1px solid #e2e8f0; padding: 10px 22px; font-size: 13px; border-radius: 999px; text-decoration: none; font-weight: 700; }
+
+        .table-wrapper { overflow-x: auto; border-radius: 16px; border: 1px solid #eef2f7; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 13px 14px; font-size: 13px; border-bottom: 1px solid #f1f5f9; }
+        th { background-color: #f8fafc; color: #64748b; font-weight: 700; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.4px; }
         td { background-color: #fff; color: #1e293b; }
+        tbody tr:last-child td { border-bottom: none; }
 
-        .status-badge { font-weight: bold; padding: 4px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; }
-        .status-pending { color: #b45309; background-color: #fef3c7; border: 1px solid #fde68a; }
-        .status-disetujui { color: #1d4ed8; background-color: #dbeafe; border: 1px solid #bfdbfe; }
-        .status-sedang-disewa { color: #6d28d9; background-color: #ede9fe; border: 1px solid #ddd6fe; }
-        .status-belum-bayar { color: #b45309; background-color: #fef3c7; border: 1px solid #fde68a; }
-        .status-sudah-bayar { color: #047857; background-color: #d1fae5; border: 1px solid #a7f3d0; }
+        .row-transaksi { cursor: pointer; }
+        .row-transaksi:hover td { background-color: #fafbff; }
+        .hint-klik { color: #94a3b8; font-size: 10.5px; display: block; margin-top: 2px; }
 
-        .btn-aksi { padding: 7px 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px; margin: 2px; }
-        .btn-setuju { background: #10b981; color: #fff; }
+        .status-badge { font-weight: 700; padding: 4px 10px; border-radius: 999px; font-size: 11.5px; white-space: nowrap; }
+        .status-pending { color: #b45309; background-color: #fef3c7; }
+        .status-disetujui { color: #1d4ed8; background-color: #dbeafe; }
+        .status-sedang-disewa { color: #6d28d9; background-color: #ede9fe; }
+        .status-belum-bayar { color: #b45309; background-color: #fef3c7; }
+        .status-sudah-bayar { color: #047857; background-color: #d1fae5; }
+        .status-blokir { color: #dc2626; background-color: #fef2f2; font-size: 10.5px; margin-left: 6px; }
+
+        button.btn-aksi { padding: 8px 14px; border: none; border-radius: 999px; cursor: pointer; font-weight: 700; font-size: 12px; margin: 2px; }
+        .btn-setuju { background: linear-gradient(135deg, #10b981, #06b6d4); color: #fff; }
         .btn-tolak { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
-        .btn-ambil { background: #6d28d9; color: #fff; }
+        .btn-ambil { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; }
         .btn-kembali { background: #0ea5e9; color: #fff; }
 
-        .empty-state { text-align: center; color: #94a3b8; padding: 30px 0; font-size: 14px; }
+        .empty-state { text-align: center; color: #94a3b8; padding: 40px 0; font-size: 14px; }
         .denda-tag { color: #dc2626; font-weight: 700; }
-        .estimasi-denda { display: block; margin-top: 4px; font-size: 11px; color: #dc2626; font-weight: 700; background: #fef2f2; border: 1px solid #fecaca; border-radius: 4px; padding: 3px 6px; }
+        .estimasi-denda { display: block; margin-top: 4px; font-size: 10.5px; color: #dc2626; font-weight: 700; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 3px 8px; }
+
+        /* Modal detail akun pelanggan */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.45); display: none; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(4px); }
+        .modal-box-detail { background: #fff; padding: 28px; border-radius: 20px; width: 100%; max-width: 480px; border: 1px solid #eef2f7; max-height: 88vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(15,23,42,0.18); }
+        .detail-foto-wrap { text-align: center; margin-bottom: 16px; }
+        .detail-foto-wrap img, .detail-foto-wrap .no-foto { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 3px solid #a5b4fc; }
+        .detail-foto-wrap .no-foto { display: flex; align-items: center; justify-content: center; font-size: 40px; background: linear-gradient(135deg, #eef2ff, #f5f3ff); margin: 0 auto; }
+        .detail-nama { text-align: center; font-size: 17px; font-weight: 800; color: #0f172a; margin-bottom: 2px; }
+        .detail-username { text-align: center; font-size: 13px; color: #64748b; margin-bottom: 18px; }
+        .detail-grid { display: grid; grid-template-columns: 130px 1fr; gap: 11px 12px; font-size: 13px; margin: 0; }
+        .detail-grid dt { color: #64748b; font-weight: 700; }
+        .detail-grid dd { margin: 0; color: #0f172a; }
+        .detail-status-blokir { color: #dc2626; font-weight: 700; }
+        .detail-status-aktif { color: #047857; font-weight: 700; }
+        .btn-tutup-detail { background: #f1f5f9; color: #475569; width: 100%; padding: 11px; border: none; border-radius: 999px; margin-top: 18px; font-weight: 700; cursor: pointer; }
+        .btn-tutup-detail:hover { background: #e2e8f0; color: #0f172a; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="topbar">
+        <div class="brand"><span class="dot"></span> BikeRent Admin</div>
         <div class="user-info">Masuk sebagai <b>{{ Auth::user()->name }}</b><span class="role-badge">{{ Auth::user()->role }}</span></div>
         <form action="/logout" method="POST" onsubmit="return confirm('Keluar dari sistem?')">
             @csrf
@@ -82,6 +122,7 @@
     @if($daftarTransaksi->isEmpty())
         <div class="empty-state">Tidak ada transaksi aktif saat ini.</div>
     @else
+    <div class="table-wrapper">
         <table>
             <thead>
                 <tr>
@@ -93,14 +134,32 @@
                     <th>Batas Kembali</th>
                     <th>Status</th>
                     <th>Status Pembayaran</th>
-                    <th style="width: 220px;">Aksi</th>
+                    <th style="width: 230px;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($daftarTransaksi as $t)
-                <tr>
+                <tr class="row-transaksi" onclick="openDetail(this)"
+                    data-id="{{ $t->user_id }}"
+                    data-nama="{{ $t->nama_penyewa }}"
+                    data-username="{{ $t->username }}"
+                    data-email="{{ $t->email }}"
+                    data-tempat-lahir="{{ $t->tempat_lahir }}"
+                    data-tanggal-lahir="{{ $t->tanggal_lahir ? \Carbon\Carbon::parse($t->tanggal_lahir)->format('d M Y') : '-' }}"
+                    data-jenis-kelamin="{{ $t->jenis_kelamin }}"
+                    data-ktp="{{ $t->no_ktp }}"
+                    data-hp="{{ $t->no_hp }}"
+                    data-alamat="{{ $t->alamat }}"
+                    data-total="{{ $t->total_transaksi }}"
+                    data-status="{{ $t->is_blocked ? 'Diblokir' : 'Aktif' }}"
+                    data-alasan="{{ $t->alasan_blokir }}"
+                    data-foto="{{ $t->foto_profil ? asset('storage/' . $t->foto_profil) : '' }}">
                     <td>#{{ $t->id_penyewaan }}</td>
-                    <td>{{ $t->nama_penyewa }}<br><small style="color:#94a3b8;">{{ $t->no_hp }}</small></td>
+                    <td>
+                        {{ $t->nama_penyewa }}
+                        @if($t->is_blocked)<span class="status-badge status-blokir">Diblokir</span>@endif
+                        <span class="hint-klik">Klik baris untuk lihat akun →</span>
+                    </td>
                     <td>{{ $t->tipe }}</td>
                     <td>{{ $t->durasi }} {{ $t->jenis_sewa == 'per_jam' ? 'jam' : 'hari' }}</td>
                     <td>Rp {{ number_format($t->total_biaya, 0, ',', '.') }}</td>
@@ -136,7 +195,7 @@
                             <span class="status-badge status-belum-bayar">Belum Dibayar</span>
                         @endif
                     </td>
-                    <td>
+                    <td onclick="event.stopPropagation()">
                         @if($t->status == 'Pending')
                             <form action="/admin/transaksi/{{ $t->id_penyewaan }}/setujui" method="POST" style="display:inline;">
                                 @csrf
@@ -162,8 +221,83 @@
                 @endforeach
             </tbody>
         </table>
+    </div>
     @endif
 </div>
+
+<div class="modal-overlay" id="modalDetail">
+    <div class="modal-box-detail">
+        <div class="detail-foto-wrap">
+            <img id="detFoto" src="" alt="Foto Profil" style="display:none;">
+            <div id="detNoFoto" class="no-foto">👤</div>
+        </div>
+        <div class="detail-nama" id="detNama"></div>
+        <div class="detail-username" id="detUsername"></div>
+
+        <dl class="detail-grid">
+            <dt>Email</dt><dd id="detEmail"></dd>
+            <dt>Tempat, Tgl Lahir</dt><dd id="detTtl"></dd>
+            <dt>Jenis Kelamin</dt><dd id="detGender"></dd>
+            <dt>No. KTP</dt><dd id="detKtp"></dd>
+            <dt>No. HP</dt><dd id="detHp"></dd>
+            <dt>Alamat</dt><dd id="detAlamat"></dd>
+            <dt>Total Transaksi</dt><dd id="detTotal"></dd>
+            <dt>Status Akun</dt><dd id="detStatus"></dd>
+            <dt id="detAlasanLabel" style="display:none;">Alasan Blokir</dt><dd id="detAlasan" style="display:none;"></dd>
+        </dl>
+
+        <button type="button" class="btn-tutup-detail" onclick="document.getElementById('modalDetail').style.display='none'">Tutup</button>
+    </div>
+</div>
+
+<script>
+    function openDetail(row) {
+        const d = row.dataset;
+
+        document.getElementById('detNama').innerText = d.nama;
+        document.getElementById('detUsername').innerText = '@' + d.username;
+        document.getElementById('detEmail').innerText = d.email || '-';
+        document.getElementById('detTtl').innerText = (d.tempatLahir || '-') + ', ' + (d.tanggalLahir || '-');
+        document.getElementById('detGender').innerText = d.jenisKelamin || '-';
+        document.getElementById('detKtp').innerText = d.ktp || '-';
+        document.getElementById('detHp').innerText = d.hp || '-';
+        document.getElementById('detAlamat').innerText = d.alamat || '-';
+        document.getElementById('detTotal').innerText = d.total + ' transaksi';
+
+        const statusEl = document.getElementById('detStatus');
+        statusEl.innerText = d.status;
+        statusEl.className = d.status === 'Diblokir' ? 'detail-status-blokir' : 'detail-status-aktif';
+
+        const alasanLabel = document.getElementById('detAlasanLabel');
+        const alasanEl = document.getElementById('detAlasan');
+        if (d.status === 'Diblokir') {
+            alasanLabel.style.display = '';
+            alasanEl.style.display = '';
+            alasanEl.innerText = d.alasan || '-';
+        } else {
+            alasanLabel.style.display = 'none';
+            alasanEl.style.display = 'none';
+        }
+
+        const fotoEl = document.getElementById('detFoto');
+        const noFotoEl = document.getElementById('detNoFoto');
+        if (d.foto) {
+            fotoEl.src = d.foto;
+            fotoEl.style.display = 'inline-block';
+            noFotoEl.style.display = 'none';
+        } else {
+            fotoEl.style.display = 'none';
+            noFotoEl.style.display = 'flex';
+        }
+
+        document.getElementById('modalDetail').style.display = 'flex';
+    }
+
+    window.onclick = function(event) {
+        const modalDet = document.getElementById('modalDetail');
+        if (event.target == modalDet) modalDet.style.display = 'none';
+    }
+</script>
 
 </body>
 </html>

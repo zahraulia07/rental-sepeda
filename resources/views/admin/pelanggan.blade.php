@@ -6,60 +6,83 @@
     <title>Manajemen Pelanggan - Rental Sepeda</title>
     <style>
         * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%); color: #1e293b; }
-        .container { max-width: 900px; margin: auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0px 10px 30px rgba(15, 23, 42, 0.06); border: 1px solid #e2e8f0; }
-        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 13px; color: #64748b; }
-        .topbar .role-badge { background: #d1fae5; color: #047857; font-weight: 700; padding: 2px 8px; border-radius: 4px; font-size: 11px; text-transform: uppercase; margin-left: 6px; }
-        .btn-logout { background: transparent; color: #ef4444; border: 1px solid #fecaca; padding: 6px 14px; border-radius: 6px; font-size: 13px; cursor: pointer; }
-        h2 { text-align: center; font-size: 24px; color: #0f172a; border-bottom: 3px solid #f1f5f9; padding-bottom: 20px; margin-bottom: 20px; }
-        .alert { padding: 12px; background-color: #f0fdf4; color: #15803d; border-radius: 6px; margin-bottom: 20px; font-size: 14px; border-left: 5px solid #10b981; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 40px 24px;
+            background-color: #f4f8fb;
+            background-image:
+                radial-gradient(circle at 8% 8%, rgba(99, 102, 241, 0.14), transparent 32%),
+                radial-gradient(circle at 92% 18%, rgba(139, 92, 246, 0.14), transparent 34%),
+                radial-gradient(circle at 50% 95%, rgba(16, 185, 129, 0.08), transparent 38%);
+            background-attachment: fixed;
+            color: #1e293b;
+        }
+        .container { max-width: 900px; margin: auto; background: #fff; padding: 32px; border-radius: 24px; box-shadow: 0px 14px 40px rgba(15, 23, 42, 0.07); border: 1px solid #eef2f7; }
 
-        .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 18px; padding: 14px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; }
-        .filter-bar input[type="text"] { padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; background: #fff; }
-        .filter-bar .btn-filter { background: #0f172a; color: #fff; padding: 8px 16px; font-size: 13px; border-radius: 6px; border: none; cursor: pointer; }
-        .filter-bar .btn-reset { background: #f1f5f9; color: #475569; padding: 8px 16px; font-size: 13px; border-radius: 6px; text-decoration: none; }
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 13px; color: #64748b; }
+        .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; color: #0f172a; font-size: 15px; }
+        .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+        .topbar .role-badge { background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #6d28d9; font-weight: 700; padding: 3px 10px; border-radius: 999px; font-size: 11px; text-transform: uppercase; margin-left: 6px; }
+        .btn-logout { background: #fff; color: #ef4444; border: 1px solid #fecaca; padding: 8px 16px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700; transition: all 0.15s; }
+        .btn-logout:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #e2e8f0; text-align: left; padding: 14px; font-size: 14px; }
-        th { background-color: #f8fafc; color: #64748b; font-weight: 600; }
+        h2 { text-align: center; font-size: 22px; color: #0f172a; border-bottom: 2px solid #f1f5f9; padding-bottom: 22px; margin: 0 0 24px; }
+        .alert { padding: 13px 16px; background-color: #ecfdf5; color: #047857; border-radius: 12px; margin-bottom: 20px; font-size: 14px; border: 1px solid #a7f3d0; font-weight: 600; }
+
+        .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 20px; padding: 12px; background: #f8fafc; border-radius: 16px; border: 1px solid #eef2f7; }
+        .filter-bar input[type="text"] { padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 999px; font-size: 13px; background: #fff; flex: 1; min-width: 200px; }
+        .filter-bar .btn-filter { background: linear-gradient(135deg, #0f172a, #334155); color: #fff; padding: 10px 22px; font-size: 13px; border-radius: 999px; border: none; cursor: pointer; font-weight: 700; }
+        .filter-bar .btn-reset { background: #fff; color: #475569; border: 1px solid #e2e8f0; padding: 10px 22px; font-size: 13px; border-radius: 999px; text-decoration: none; font-weight: 700; }
+
+        .table-wrapper { overflow-x: auto; border-radius: 16px; border: 1px solid #eef2f7; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 15px; font-size: 13.5px; border-bottom: 1px solid #f1f5f9; }
+        th { background-color: #f8fafc; color: #64748b; font-weight: 700; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.4px; }
         td { background-color: #fff; color: #1e293b; }
+        tbody tr:last-child td { border-bottom: none; }
 
-        .status-badge { font-weight: bold; padding: 3px 8px; border-radius: 4px; font-size: 11px; margin-left: 8px; }
-        .status-blokir { color: #dc2626; background-color: #fef2f2; border: 1px solid #fecaca; }
+        .status-badge { font-weight: 700; padding: 3px 10px; border-radius: 999px; font-size: 11px; margin-left: 8px; }
+        .status-blokir { color: #dc2626; background-color: #fef2f2; }
 
         .row-pelanggan { cursor: pointer; }
-        .row-pelanggan:hover td { background-color: #f8fafc; }
-        .hint-klik { color: #94a3b8; font-size: 12px; float: right; }
+        .row-pelanggan:hover td { background-color: #fafbff; }
+        .hint-klik { color: #94a3b8; font-size: 11px; float: right; }
 
-        .modal-box-detail { background: #fff; padding: 28px; border-radius: 12px; width: 100%; max-width: 480px; border: 1px solid #e2e8f0; max-height: 88vh; overflow-y: auto; }
-        .detail-foto-wrap { text-align: center; margin-bottom: 18px; }
-        .detail-foto-wrap img, .detail-foto-wrap .no-foto { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid #10b981; }
-        .detail-foto-wrap .no-foto { display: flex; align-items: center; justify-content: center; font-size: 44px; background: #f1f5f9; margin: 0 auto; }
-        .detail-nama { text-align: center; font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
-        .detail-username { text-align: center; font-size: 13px; color: #64748b; margin-bottom: 16px; }
-        .detail-grid { display: grid; grid-template-columns: 130px 1fr; gap: 10px 12px; font-size: 13px; }
-        .detail-grid dt { color: #64748b; font-weight: 600; }
+        /* Modal detail akun */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.45); display: none; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(4px); }
+        .modal-box-detail { background: #fff; padding: 28px; border-radius: 20px; width: 100%; max-width: 480px; border: 1px solid #eef2f7; max-height: 88vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(15,23,42,0.18); }
+        .detail-foto-wrap { text-align: center; margin-bottom: 16px; }
+        .detail-foto-wrap img, .detail-foto-wrap .no-foto { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #a5b4fc; }
+        .detail-foto-wrap .no-foto { display: flex; align-items: center; justify-content: center; font-size: 42px; background: linear-gradient(135deg, #eef2ff, #f5f3ff); margin: 0 auto; }
+        .detail-nama { text-align: center; font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 2px; }
+        .detail-username { text-align: center; font-size: 13px; color: #64748b; margin-bottom: 18px; }
+        .detail-grid { display: grid; grid-template-columns: 130px 1fr; gap: 11px 12px; font-size: 13px; margin: 0; }
+        .detail-grid dt { color: #64748b; font-weight: 700; }
         .detail-grid dd { margin: 0; color: #0f172a; }
         .detail-status-blokir { color: #dc2626; font-weight: 700; }
         .detail-status-aktif { color: #047857; font-weight: 700; }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.4); display: none; justify-content: center; align-items: center; z-index: 9999; }
-        .modal-box { background: #fff; padding: 26px; border-radius: 10px; width: 100%; max-width: 420px; border: 1px solid #e2e8f0; }
+        /* Modal blokir */
+        .modal-box { background: #fff; padding: 26px; border-radius: 20px; width: 100%; max-width: 420px; border: 1px solid #eef2f7; box-shadow: 0 20px 50px rgba(15,23,42,0.18); }
+        .modal-box h3 { margin-top: 0; font-size: 18px; color: #0f172a; }
         .form-group { margin-bottom: 14px; }
-        label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #475569; }
-        input, textarea { width: 100%; padding: 9px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; }
-        .btn-simpan { background: #dc2626; color: #fff; width: 100%; padding: 10px; border: none; border-radius: 6px; font-weight: bold; margin-top: 4px; }
-        .btn-batal { background: #f1f5f9; color: #475569; width: 100%; padding: 9px; border: none; border-radius: 6px; margin-top: 8px; }
-        .btn-aksi { padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px; width: 100%; margin-top: 18px; }
+        label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 13px; color: #475569; }
+        textarea { width: 100%; padding: 11px 12px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 13px; font-family: inherit; resize: vertical; }
+        textarea:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 4px rgba(99,102,241,0.12); }
+        .btn-simpan { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; width: 100%; padding: 12px; border: none; border-radius: 999px; font-weight: 700; margin-top: 4px; cursor: pointer; }
+        .btn-batal { background: #f1f5f9; color: #475569; width: 100%; padding: 11px; border: none; border-radius: 999px; margin-top: 8px; font-weight: 700; cursor: pointer; }
+        .btn-batal:hover { background: #e2e8f0; color: #0f172a; }
+        .btn-aksi { padding: 12px 16px; border: none; border-radius: 999px; cursor: pointer; font-weight: 700; font-size: 13.5px; width: 100%; margin-top: 20px; }
         .btn-blokir { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
-        .btn-buka { background: #10b981; color: #fff; }
-        small.alasan { color: #dc2626; display: block; margin-top: 3px; }
+        .btn-blokir:hover { background: #fee2e2; }
+        .btn-buka { background: linear-gradient(135deg, #10b981, #06b6d4); color: #fff; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="topbar">
+        <div class="brand"><span class="dot"></span> BikeRent Admin</div>
         <div>Masuk sebagai <b>{{ Auth::user()->name }}</b><span class="role-badge">{{ Auth::user()->role }}</span></div>
         <form action="/logout" method="POST" onsubmit="return confirm('Keluar dari sistem?')">
             @csrf
@@ -81,11 +104,12 @@
         <a href="/admin/pelanggan" class="btn-reset">Reset</a>
     </form>
 
+    <div class="table-wrapper">
     <table>
         <thead>
             <tr>
                 <th>Nama</th>
-                <th style="width: 180px;">Total Transaksi</th>
+                <th style="width: 200px;">Total Transaksi</th>
             </tr>
         </thead>
         <tbody>
@@ -114,10 +138,11 @@
                 <td>{{ $p->total_transaksi }} transaksi <span class="hint-klik">Klik untuk detail →</span></td>
             </tr>
             @empty
-            <tr><td colspan="2" style="text-align:center; color:#94a3b8;">Belum ada pelanggan terdaftar.</td></tr>
+            <tr><td colspan="2" style="text-align:center; color:#94a3b8; padding: 30px;">Belum ada pelanggan terdaftar.</td></tr>
             @endforelse
         </tbody>
     </table>
+    </div>
 </div>
 
 <div class="modal-overlay" id="modalDetail">
@@ -154,7 +179,7 @@
 
 <div class="modal-overlay" id="modalBlokir">
     <div class="modal-box">
-        <h3 style="margin-top:0;">Blokir Akun <span id="namaTarget"></span></h3>
+        <h3>Blokir Akun <span id="namaTarget"></span></h3>
         <form id="formBlokir" method="POST">
             @csrf
             <div class="form-group">

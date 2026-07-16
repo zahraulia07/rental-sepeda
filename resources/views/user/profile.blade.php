@@ -7,43 +7,57 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
     <style>
         * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%); color: #1e293b; }
-        .container { max-width: 700px; margin: auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0px 10px 30px rgba(15, 23, 42, 0.06); border: 1px solid #e2e8f0; margin-bottom: 24px; }
-        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 13px; color: #64748b; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 40px 24px;
+            background-color: #f4f8fb;
+            background-image:
+                radial-gradient(circle at 8% 8%, rgba(16, 185, 129, 0.16), transparent 32%),
+                radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.16), transparent 34%),
+                radial-gradient(circle at 50% 95%, rgba(245, 158, 11, 0.10), transparent 38%);
+            background-attachment: fixed;
+            color: #1e293b;
+        }
+        .container { max-width: 700px; margin: auto; background: #fff; padding: 32px; border-radius: 24px; box-shadow: 0px 14px 40px rgba(15, 23, 42, 0.07); border: 1px solid #eef2f7; margin-bottom: 24px; }
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 13px; color: #64748b; }
+        .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; color: #0f172a; font-size: 15px; }
+        .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #06b6d4); }
         .topbar .user-info b { color: #0f172a; }
-        .topbar .role-badge { background: #dbeafe; color: #1d4ed8; font-weight: 700; padding: 2px 8px; border-radius: 4px; font-size: 11px; text-transform: uppercase; margin-left: 6px; }
-        .btn-logout { background: transparent; color: #ef4444; border: 1px solid #fecaca; padding: 6px 14px; border-radius: 6px; font-size: 13px; cursor: pointer; }
-        .btn-logout:hover { background: #fef2f2; }
+        .topbar .role-badge { background: linear-gradient(135deg, #dbeafe, #e0f2fe); color: #1d4ed8; font-weight: 700; padding: 3px 10px; border-radius: 999px; font-size: 11px; text-transform: uppercase; margin-left: 6px; }
+        .btn-logout { background: #fff; color: #ef4444; border: 1px solid #fecaca; padding: 8px 16px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700; transition: all 0.15s; }
+        .btn-logout:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
 
-        h2 { font-size: 20px; color: #0f172a; border-bottom: 3px solid #f1f5f9; padding-bottom: 16px; margin-bottom: 20px; }
+        .section-title { display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #f1f5f9; padding-bottom: 16px; margin-bottom: 20px; }
+        .section-title h2 { margin: 0; font-size: 19px; color: #0f172a; }
 
-        .alert { padding: 12px; background-color: #f0fdf4; color: #15803d; border-radius: 6px; margin-bottom: 20px; font-size: 14px; border-left: 5px solid #10b981; }
-        .alert-gagal { padding: 12px; background-color: #fef2f2; color: #b91c1c; border-radius: 6px; margin-bottom: 20px; font-size: 14px; border-left: 5px solid #ef4444; }
+        .alert { padding: 13px 16px; background-color: #ecfdf5; color: #047857; border-radius: 12px; margin-bottom: 20px; font-size: 14px; border: 1px solid #a7f3d0; font-weight: 600; }
+        .alert-gagal { padding: 13px 16px; background-color: #fef2f2; color: #b91c1c; border-radius: 12px; margin-bottom: 20px; font-size: 14px; border: 1px solid #fecaca; font-weight: 600; }
 
         .form-group { margin-bottom: 16px; }
-        label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #475569; }
-        input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; background: #f8fafc; }
+        label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 13px; color: #475569; }
+        input { width: 100%; padding: 11px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 14px; background: #f8fafc; }
         input:focus { outline: none; border-color: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); background: #fff; }
         input[disabled] { color: #94a3b8; background: #f1f5f9; }
         .error { color: #dc2626; font-size: 12px; margin-top: 4px; }
 
-        .btn-simpan { background: #10b981; color: #fff; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer; }
-        .btn-simpan:hover { background: #059669; }
+        .btn-simpan { background: linear-gradient(135deg, #10b981, #06b6d4); color: #fff; padding: 12px 24px; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: 0 8px 18px rgba(16,185,129,0.28); }
+        .btn-simpan:hover { filter: brightness(1.05); }
         .hint { font-size: 12px; color: #94a3b8; margin-top: -10px; margin-bottom: 16px; }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.5); display: none; justify-content: center; align-items: center; z-index: 9999; }
-        .modal-crop-box { background: #fff; padding: 22px; border-radius: 12px; width: 100%; max-width: 480px; border: 1px solid #e2e8f0; }
-        .crop-img-wrap { max-height: 380px; overflow: hidden; background: #0f172a; border-radius: 8px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.5); display: none; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(2px); }
+        .modal-crop-box { background: #fff; padding: 24px; border-radius: 20px; width: 100%; max-width: 480px; border: 1px solid #eef2f7; box-shadow: 0 20px 50px rgba(15,23,42,0.25); }
+        .crop-img-wrap { max-height: 380px; overflow: hidden; background: #0f172a; border-radius: 14px; }
         .crop-img-wrap img { display: block; max-width: 100%; }
-        .btn-simpan-crop { background: #10b981; color: #fff; width: 100%; padding: 10px; border: none; border-radius: 6px; font-weight: bold; margin-top: 16px; cursor: pointer; }
-        .btn-batal-crop { background: #f1f5f9; color: #475569; width: 100%; padding: 9px; border: none; border-radius: 6px; margin-top: 8px; cursor: pointer; }
-        .btn-pilih-foto { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; padding: 9px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
+        .btn-simpan-crop { background: linear-gradient(135deg, #10b981, #06b6d4); color: #fff; width: 100%; padding: 11px; border: none; border-radius: 12px; font-weight: 700; margin-top: 16px; cursor: pointer; box-shadow: 0 8px 18px rgba(16,185,129,0.28); }
+        .btn-batal-crop { background: #f1f5f9; color: #475569; width: 100%; padding: 10px; border: none; border-radius: 12px; margin-top: 8px; cursor: pointer; font-weight: 700; }
+        .btn-pilih-foto { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; padding: 10px 18px; border-radius: 999px; font-size: 13px; font-weight: 700; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="topbar">
+        <div class="brand"><span class="dot"></span> BikeRent</div>
         <div class="user-info">Masuk sebagai <b>{{ Auth::user()->name }}</b><span class="role-badge">{{ Auth::user()->role }}</span></div>
         <form action="/logout" method="POST" onsubmit="return confirm('Keluar dari sistem?')">
             @csrf
@@ -62,17 +76,17 @@
 </div>
 
 <div class="container">
-    <h2>👤 Edit Profil</h2>
+    <div class="section-title"><h2>👤 Edit Profil</h2></div>
     <form action="/profile" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="form-group" style="text-align:center;">
             @if($user->foto_profil)
-                <img id="previewFoto" src="{{ asset('storage/' . $user->foto_profil) }}" alt="Foto Profil" style="width:90px;height:90px;object-fit:cover;border-radius:50%;border:2px solid #10b981; display:block; margin:0 auto;">
+                <img id="previewFoto" src="{{ asset('storage/' . $user->foto_profil) }}" alt="Foto Profil" style="width:96px;height:96px;object-fit:cover;border-radius:50%;border:3px solid #10b981; display:block; margin:0 auto; box-shadow: 0 8px 20px rgba(16,185,129,0.25);">
             @else
-                <img id="previewFoto" src="" alt="Foto Profil" style="width:90px;height:90px;object-fit:cover;border-radius:50%;border:2px solid #10b981; display:none; margin:0 auto;">
+                <img id="previewFoto" src="" alt="Foto Profil" style="width:96px;height:96px;object-fit:cover;border-radius:50%;border:3px solid #10b981; display:none; margin:0 auto;">
             @endif
-            <div id="previewFotoKosong" style="width:90px;height:90px;border-radius:50%;background:#f1f5f9;display:{{ $user->foto_profil ? 'none' : 'flex' }};align-items:center;justify-content:center;font-size:36px;margin:0 auto;">👤</div>
+            <div id="previewFotoKosong" style="width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg, #ecfeff, #f0fdf4);display:{{ $user->foto_profil ? 'none' : 'flex' }};align-items:center;justify-content:center;font-size:38px;margin:0 auto;">👤</div>
         </div>
         <div class="form-group" style="text-align:center;">
             <label style="text-align:center;">Foto Profil</label>
@@ -103,7 +117,7 @@
         </div>
         <div class="form-group">
             <label>Jenis Kelamin</label>
-            <select name="jenis_kelamin" required style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; background: #f8fafc;">
+            <select name="jenis_kelamin" required style="width: 100%; padding: 11px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 14px; background: #f8fafc;">
                 <option value="" disabled>Pilih jenis kelamin</option>
                 <option value="Laki-laki" {{ old('jenis_kelamin', $user->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                 <option value="Perempuan" {{ old('jenis_kelamin', $user->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
@@ -126,7 +140,7 @@
 </div>
 
 <div class="container">
-    <h2>🔒 Ganti Kata Sandi</h2>
+    <div class="section-title"><h2>🔒 Ganti Kata Sandi</h2></div>
     <form action="/profile/password" method="POST">
         @csrf
         @method('PUT')

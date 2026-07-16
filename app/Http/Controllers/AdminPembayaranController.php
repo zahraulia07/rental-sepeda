@@ -17,7 +17,20 @@ class AdminPembayaranController extends Controller
             ->select(
                 'penyewaans.*',
                 'sepeda.tipe',
-                'users.name as nama_penyewa'
+                'users.id as user_id',
+                'users.name as nama_penyewa',
+                'users.username',
+                'users.email',
+                'users.tempat_lahir',
+                'users.tanggal_lahir',
+                'users.jenis_kelamin',
+                'users.no_ktp',
+                'users.no_hp',
+                'users.alamat',
+                'users.foto_profil',
+                'users.is_blocked',
+                'users.alasan_blokir',
+                DB::raw('(select count(*) from penyewaans p2 where p2.user_id = users.id) as total_transaksi')
             )
             ->orderByRaw("CASE WHEN penyewaans.status_pembayaran = 'Menunggu' THEN 0 ELSE 1 END")
             ->orderByDesc('penyewaans.updated_at')

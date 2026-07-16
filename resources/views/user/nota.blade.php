@@ -6,32 +6,49 @@
     <title>Nota #{{ $nota->id_penyewaan }} - Rental Sepeda</title>
     <style>
         * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%); color: #1e293b; }
-        .nota-box { max-width: 480px; margin: auto; background: #fff; padding: 32px; border-radius: 12px; box-shadow: 0px 10px 30px rgba(15, 23, 42, 0.08); border: 1px solid #e2e8f0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 40px 24px;
+            background-color: #f4f8fb;
+            background-image:
+                radial-gradient(circle at 8% 8%, rgba(16, 185, 129, 0.16), transparent 32%),
+                radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.16), transparent 34%),
+                radial-gradient(circle at 50% 95%, rgba(245, 158, 11, 0.10), transparent 38%);
+            background-attachment: fixed;
+            color: #1e293b;
+        }
+        .page-wrap { max-width: 480px; margin: auto; }
+        .nota-box { background: #fff; padding: 32px; border-radius: 24px; box-shadow: 0px 14px 40px rgba(15, 23, 42, 0.08); border: 1px solid #eef2f7; }
         .brand { text-align: center; margin-bottom: 20px; }
-        .brand h2 { margin: 0; font-size: 20px; color: #0f172a; }
+        .brand .icon-circle { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #06b6d4); display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 12px; box-shadow: 0 10px 22px rgba(16,185,129,0.3); }
+        .brand h2 { margin: 0; font-size: 19px; color: #0f172a; }
         .brand p { margin: 4px 0 0; font-size: 12px; color: #94a3b8; }
         .divider { border-top: 1px dashed #cbd5e1; margin: 18px 0; }
-        .baris { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; color: #475569; }
-        .baris b { color: #0f172a; }
-        .total-row { display: flex; justify-content: space-between; font-size: 15px; font-weight: 800; color: #0f172a; margin-top: 10px; }
-        .lunas-badge { display: block; text-align: center; margin: 18px 0 6px; background: #d1fae5; color: #047857; font-weight: 700; padding: 8px; border-radius: 8px; font-size: 13px; }
+        .baris { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 9px; color: #64748b; gap: 12px; }
+        .baris span:first-child { flex-shrink: 0; }
+        .baris b { color: #0f172a; text-align: right; }
+        .total-row { display: flex; justify-content: space-between; font-size: 16px; font-weight: 800; color: #0f172a; margin-top: 10px; }
+        .lunas-badge { display: block; text-align: center; margin: 18px 0 6px; background: linear-gradient(135deg, #d1fae5, #ccfbf1); color: #047857; font-weight: 800; padding: 10px; border-radius: 12px; font-size: 13px; letter-spacing: 0.2px; }
         .footer-note { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 20px; }
-        .btn-print { display: block; width: 100%; margin: 20px auto 0; padding: 10px; background: #10b981; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; }
-        .btn-print:hover { background: #059669; }
-
-        @media print {
-            body { margin: 0; background: #fff; }
-            .btn-print { display: none; }
-            .nota-box { box-shadow: none; border: none; }
+        .btn-download {
+            display: block; width: 100%; margin: 20px auto 0; padding: 13px;
+            background: linear-gradient(135deg, #10b981, #06b6d4); color: #fff; border: none;
+            border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer;
+            box-shadow: 0 10px 22px rgba(16,185,129,0.3);
         }
+        .btn-download:hover { filter: brightness(1.05); }
+        .btn-download:disabled { opacity: 0.7; cursor: wait; }
+        .btn-back { display: block; text-align: center; margin-top: 12px; font-size: 12.5px; color: #64748b; text-decoration: none; font-weight: 600; }
+        .btn-back:hover { color: #0f172a; }
     </style>
 </head>
 <body>
 
-<div class="nota-box">
+<div class="page-wrap">
+<div class="nota-box" id="notaBox">
     <div class="brand">
-        <h2>🚲 Nota Digital Rental Sepeda</h2>
+        <div class="icon-circle">🚲</div>
+        <h2>Nota Digital Rental Sepeda</h2>
         <p>Kuitansi Transaksi #{{ $nota->id_penyewaan }}</p>
     </div>
 
@@ -65,10 +82,40 @@
         <p style="font-size: 11px; color: #dc2626; text-align:center;">*Denda dikenakan karena sepeda dikembalikan melewati batas waktu sewa.</p>
     @endif
 
-    <button class="btn-print" onclick="window.print()">🖨️ Cetak / Unduh Nota (PDF)</button>
-
     <div class="footer-note">Terima kasih telah menggunakan layanan rental sepeda kami.</div>
 </div>
+
+<button class="btn-download" id="btnDownload" onclick="unduhNota()">📥 Unduh Nota (PDF)</button>
+<a href="javascript:history.back()" class="btn-back">← Kembali ke Riwayat Sewa</a>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+    function unduhNota() {
+        const btn = document.getElementById('btnDownload');
+        const asli = btn.innerText;
+        btn.disabled = true;
+        btn.innerText = '⏳ Menyiapkan file...';
+
+        const elemen = document.getElementById('notaBox');
+        const opsi = {
+            margin: 0.3,
+            filename: 'nota-sewa-{{ $nota->id_penyewaan }}.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, backgroundColor: '#ffffff' },
+            jsPDF: { unit: 'in', format: 'a5', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opsi).from(elemen).save().then(function () {
+            btn.disabled = false;
+            btn.innerText = asli;
+        }).catch(function () {
+            btn.disabled = false;
+            btn.innerText = asli;
+            alert('Gagal membuat file PDF, coba lagi ya.');
+        });
+    }
+</script>
 
 </body>
 </html>

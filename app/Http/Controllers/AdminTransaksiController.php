@@ -24,8 +24,20 @@ class AdminTransaksiController extends Controller
                 'sepeda.harga_per_hari',
                 'sepeda.denda_per_jam',
                 'sepeda.denda_per_hari',
+                'users.id as user_id',
                 'users.name as nama_penyewa',
-                'users.no_hp'
+                'users.username',
+                'users.email',
+                'users.tempat_lahir',
+                'users.tanggal_lahir',
+                'users.jenis_kelamin',
+                'users.no_ktp',
+                'users.no_hp',
+                'users.alamat',
+                'users.foto_profil',
+                'users.is_blocked',
+                'users.alasan_blokir',
+                DB::raw('(select count(*) from penyewaans p2 where p2.user_id = users.id) as total_transaksi')
             );
     }
 

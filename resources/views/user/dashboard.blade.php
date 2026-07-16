@@ -3,409 +3,407 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - BikeRent Pro</title>
-    <!-- Koneksi Aset Vite & Tailwind CSS Bawaan Proyek -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <!-- Google Fonts untuk tampilan font modern -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Dashboard - Rental Sepeda</title>
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 40px 24px;
+            background-color: #f4f8fb;
+            background-image:
+                radial-gradient(circle at 8% 8%, rgba(16, 185, 129, 0.16), transparent 32%),
+                radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.16), transparent 34%),
+                radial-gradient(circle at 50% 95%, rgba(245, 158, 11, 0.10), transparent 38%);
+            background-attachment: fixed;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: auto;
+            background: #ffffff;
+            padding: 32px;
+            border-radius: 24px;
+            box-shadow: 0px 14px 40px rgba(15, 23, 42, 0.07);
+            border: 1px solid #eef2f7;
+            margin-bottom: 24px;
+        }
+
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 13px; color: #64748b; }
+        .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; color: #0f172a; font-size: 15px; }
+        .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #06b6d4); }
+        .topbar .user-info b { color: #0f172a; }
+        .topbar .role-badge { background: linear-gradient(135deg, #dbeafe, #e0f2fe); color: #1d4ed8; font-weight: 700; padding: 3px 10px; border-radius: 999px; font-size: 11px; text-transform: uppercase; margin-left: 6px; }
+        .btn-logout { background: #fff; color: #ef4444; border: 1px solid #fecaca; padding: 8px 16px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700; transition: all 0.15s; }
+        .btn-logout:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
+
+        .hero-banner {
+            position: relative; overflow: hidden;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            border-radius: 22px; padding: 34px 30px; margin-bottom: 26px;
+            color: #fff; text-align: center;
+        }
+        .hero-banner::before {
+            content: ""; position: absolute; top: -60px; right: -40px; width: 220px; height: 220px;
+            background: rgba(255,255,255,0.14); border-radius: 50%;
+        }
+        .hero-banner::after {
+            content: ""; position: absolute; bottom: -70px; left: -30px; width: 180px; height: 180px;
+            background: rgba(255,255,255,0.10); border-radius: 50%;
+        }
+        .hero-banner h2 { margin: 0; font-size: 26px; position: relative; z-index: 1; letter-spacing: 0.2px; }
+        .hero-banner p { margin: 8px 0 0; font-size: 13.5px; opacity: 0.92; position: relative; z-index: 1; }
+        .hero-emoji { font-size: 40px; margin-bottom: 6px; position: relative; z-index: 1; }
+
+        .section-title { display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #f1f5f9; padding-bottom: 16px; margin-bottom: 20px; }
+        .section-title h2 { margin: 0; font-size: 19px; color: #0f172a; }
+
+        .alert { padding: 13px 16px; background-color: #ecfdf5; color: #047857; border-radius: 12px; margin-bottom: 20px; font-size: 14px; border: 1px solid #a7f3d0; font-weight: 600; }
+        .alert-gagal { padding: 13px 16px; background-color: #fef2f2; color: #b91c1c; border-radius: 12px; margin-bottom: 20px; font-size: 14px; border: 1px solid #fecaca; font-weight: 600; }
+        .alert-blokir { padding: 16px; background-color: #fef2f2; color: #b91c1c; border-radius: 14px; margin-bottom: 20px; font-size: 14px; border: 1px solid #fecaca; text-align: center; font-weight: 700; }
+
+        .filter-bar { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; background: #f8fafc; padding: 12px; border-radius: 16px; border: 1px solid #eef2f7; }
+        .filter-bar input, .filter-bar select { padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 999px; font-size: 13px; background: #fff; }
+        .filter-bar input { flex: 1; min-width: 180px; }
+        .btn-filter { background: linear-gradient(135deg, #0f172a, #334155); color: #fff; border: none; padding: 10px 22px; border-radius: 999px; font-weight: 700; font-size: 13px; cursor: pointer; }
+        .btn-filter:hover { opacity: 0.9; }
+        .btn-reset { background: #fff; color: #475569; border: 1px solid #e2e8f0; padding: 10px 22px; border-radius: 999px; font-weight: 700; font-size: 13px; text-decoration: none; }
+
+        .grid-sepeda { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; align-items: stretch; }
+        .card-sepeda { border: 1px solid #eef2f7; border-radius: 18px; padding: 18px; background: #fff; display: flex; flex-direction: column; transition: all 0.2s ease; box-shadow: 0 2px 10px rgba(15,23,42,0.03); }
+        .card-sepeda:hover { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(15,23,42,0.10); border-color: #d1fae5; }
+        .card-sepeda.card-nonaktif { background: #f8fafc; opacity: 0.72; }
+        .card-sepeda.card-nonaktif:hover { transform: none; box-shadow: 0 2px 10px rgba(15,23,42,0.03); }
+        .card-sepeda .foto { width: 100%; height: 150px; object-fit: cover; border-radius: 14px; margin-bottom: 12px; background: #e2e8f0; }
+        .card-sepeda .foto-kosong { width: 100%; height: 150px; border-radius: 14px; margin-bottom: 12px; background: linear-gradient(135deg, #ecfeff, #f0fdf4); display: flex; align-items: center; justify-content: center; font-size: 42px; }
+        .card-sepeda h3 { margin: 0 0 6px; font-size: 16px; color: #0f172a; }
+        .card-sepeda .kategori { font-size: 11px; color: #4338ca; background: #eef2ff; display: inline-block; padding: 3px 10px; border-radius: 999px; font-weight: 700; margin-bottom: 6px; }
+        .card-sepeda .status-chip { font-size: 11px; font-weight: 700; display: inline-block; padding: 3px 10px; border-radius: 999px; margin-bottom: 10px; margin-left: 6px; }
+        .status-chip.chip-tersedia { color: #047857; background: #d1fae5; }
+        .status-chip.chip-maintenance { color: #b45309; background: #fef3c7; }
+        .status-chip.chip-disewa { color: #6d28d9; background: #ede9fe; }
+        .status-chip.chip-habis { color: #b91c1c; background: #fef2f2; }
+        .card-sepeda .harga { font-size: 13px; color: #475569; margin-bottom: 4px; }
+        .card-sepeda .harga b { color: #0f172a; }
+        .card-sepeda .stok { font-size: 12px; color: #94a3b8; margin-top: 4px; font-weight: 600; }
+
+        .form-sewa { margin-top: auto; padding-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+        .form-sewa select, .form-sewa input { padding: 8px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; }
+        .form-sewa label.tnc-check { display: flex; align-items: flex-start; gap: 6px; font-size: 11px; color: #64748b; line-height: 1.4; }
+        .form-sewa label.tnc-check input { width: auto; margin-top: 2px; }
+        .form-sewa label.tnc-check a { color: #2563eb; }
+        .btn-sewa { padding: 11px; border: none; border-radius: 12px; background: linear-gradient(135deg, #10b981, #06b6d4); color: #fff; font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: 0 8px 18px rgba(16,185,129,0.28); }
+        .btn-sewa:hover { filter: brightness(1.05); }
+        .btn-sewa-disabled { margin-top: auto; padding: 11px; border: none; border-radius: 12px; background: #e2e8f0; color: #94a3b8; font-weight: 700; font-size: 14px; cursor: not-allowed; text-align: center; }
+        .empty-state { text-align: center; color: #94a3b8; padding: 30px 0; font-size: 14px; }
+
+        .table-wrap { border: 1px solid #eef2f7; border-radius: 16px; overflow: hidden; margin-top: 6px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 14px; font-size: 13px; border-bottom: 1px solid #f1f5f9; }
+        th { background-color: #f8fafc; color: #64748b; font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 0.3px; }
+        td { background-color: #ffffff; color: #1e293b; }
+        tr:last-child td { border-bottom: none; }
+        tbody tr:hover td { background-color: #f8fafc; }
+
+        .status-badge { font-weight: 700; padding: 4px 11px; border-radius: 999px; font-size: 11.5px; white-space: nowrap; }
+        .status-pending { color: #b45309; background-color: #fef3c7; }
+        .status-disetujui { color: #1d4ed8; background-color: #dbeafe; }
+        .status-sedang-disewa { color: #6d28d9; background-color: #ede9fe; }
+        .status-selesai { color: #047857; background-color: #d1fae5; }
+        .status-ditolak { color: #dc2626; background-color: #fef2f2; }
+        .denda-tag { color: #dc2626; font-weight: 700; }
+
+        .btn-upload { padding: 7px 14px; border: none; border-radius: 999px; background: linear-gradient(135deg, #0ea5e9, #06b6d4); color: #fff; font-size: 12px; cursor: pointer; font-weight: 700; }
+        .btn-nota { padding: 7px 14px; border: none; border-radius: 999px; background: linear-gradient(135deg, #10b981, #059669); color: #fff; font-size: 12px; text-decoration: none; font-weight: 700; display: inline-block; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.45); display: none; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(2px); }
+        .modal-box { background: #fff; padding: 26px; border-radius: 20px; width: 100%; max-width: 440px; max-height: 88vh; overflow-y: auto; border: 1px solid #eef2f7; box-shadow: 0 20px 50px rgba(15,23,42,0.25); }
+        .modal-box h3 { display: flex; align-items: center; gap: 8px; }
+        .modal-box label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #475569; }
+        .modal-box select, .modal-box input { width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 13px; margin-bottom: 14px; box-sizing: border-box; }
+        .btn-kirim { background: linear-gradient(135deg, #10b981, #06b6d4); color: #fff; width: 100%; padding: 12px; border: none; border-radius: 12px; font-weight: 700; box-shadow: 0 8px 18px rgba(16,185,129,0.28); }
+        .btn-batal { background: #f1f5f9; color: #475569; width: 100%; padding: 10px; border: none; border-radius: 12px; margin-top: 8px; font-weight: 700; }
+
+        .status-aktif-card { border: none; border-radius: 18px; padding: 22px; background: linear-gradient(135deg, #ede9fe, #ecfeff); margin-bottom: 10px; }
+        .status-aktif-card .judul { font-size: 11.5px; font-weight: 800; color: #6d28d9; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.3px; }
+        .status-aktif-card .isi { font-size: 16px; color: #0f172a; font-weight: 700; margin-bottom: 4px; }
+        .status-aktif-card .sub { font-size: 13px; color: #64748b; }
+        .countdown { font-size: 21px; font-weight: 800; color: #6d28d9; margin-top: 10px; letter-spacing: 0.5px; }
+        .countdown.telat { color: #dc2626; }
+
+        .payment-info { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 14px; padding: 16px; margin-bottom: 16px; }
+        .payment-total { font-size: 14px; color: #475569; margin-bottom: 12px; }
+        .payment-total b { color: #0f172a; font-size: 17px; }
+        .payment-tabs { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+        .payment-method-box { flex: 1; min-width: 140px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 12px; }
+        .payment-label { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 6px; }
+        .payment-value { font-size: 12px; color: #334155; line-height: 1.5; }
+        .payment-value .rekening { font-size: 15px; font-weight: 800; color: #10b981; letter-spacing: 0.5px; }
+        .qris-box { background: #f1f5f9; border-radius: 10px; text-align: center; padding: 14px 6px; font-weight: 700; color: #475569; font-size: 12px; letter-spacing: 1px; }
+        .qris-box small { display: block; font-weight: 400; color: #94a3b8; margin-top: 4px; letter-spacing: normal; }
+        .payment-deadline { font-size: 12px; color: #64748b; border-top: 1px dashed #bbf7d0; padding-top: 10px; }
+        .countdown-bayar { font-size: 16px; font-weight: 800; color: #b45309; margin-top: 4px; }
+        .countdown-bayar.telat { color: #dc2626; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased">
+<body>
 
-<div class="flex h-screen overflow-hidden">
-    
-    <!-- ========================================== -->
-    <!-- SIDEBAR (KIRI) -->
-    <!-- ========================================== -->
-    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col justify-between p-6 shrink-0">
-        <div>
-            <!-- Logo Brand -->
-            <div class="mb-8 px-2">
-                <h1 class="font-bold text-xl text-slate-900 tracking-tight">BikeRent <span class="text-emerald-600">Pro</span></h1>
-                <p class="text-xs text-slate-400 font-medium">User Dashboard Hub</p>
-            </div>
-            
-            <!-- Navigasi Menu (Menggunakan partial bawaan proyekmu) -->
-            <div class="mb-4">
-                @include('partials.user-nav')
-            </div>
-
-            <!-- Tambahan Menu Navigasi Modern -->
-            <nav class="space-y-1">
-                <a href="/dashboard" class="flex items-center gap-3 px-4 py-2.5 bg-emerald-50 text-emerald-700 rounded-xl font-semibold text-sm transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"></path></svg>
-                    Sewa Sepeda
-                </a>
-                
-                <!-- Tombol Keluar / Logout Sistem -->
-                <form action="/logout" method="POST" onsubmit="return confirm('Keluar dari sistem?')" class="block w-full pt-4 border-t border-slate-100 mt-2">
-                    @csrf
-                    <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 text-red-500 hover:bg-red-50 rounded-xl font-medium text-sm transition text-left">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                        Keluar
-                    </button>
-                </form>
-            </nav>
+<div class="container">
+    <div class="topbar">
+        <div class="brand"><span class="dot"></span> BikeRent</div>
+        <div class="user-info">
+            Masuk sebagai <b>{{ Auth::user()->name }}</b>
+            <span class="role-badge">{{ Auth::user()->role }}</span>
         </div>
-        
-        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
-            <p class="text-xs text-slate-500 font-medium">Butuh bantuan sewa?<br><a href="#" class="text-emerald-600 font-bold underline">Hubungi Admin</a></p>
-        </div>
-    </aside>
-
-    <!-- ========================================== -->
-    <!-- MAIN CONTENT AREA (KANAN) -->
-    <!-- ========================================== -->
-    <div class="flex-1 flex flex-col overflow-y-auto">
-        
-        <!-- Top Navbar -->
-        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-10 shrink-0">
-            <div>
-                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Selamat Datang</span>
-                <h2 class="text-sm font-bold text-slate-800 flex items-center gap-2 mt-0.5">
-                    {{ Auth::user()->name }} 
-                    <span class="px-2 py-0.5 bg-blue-50 text-blue-600 font-bold text-[10px] rounded uppercase tracking-wider">{{ Auth::user()->role }}</span>
-                </h2>
-            </div>
-            
-            <div class="flex items-center gap-4">
-                <div class="h-8 w-px bg-slate-200"></div>
-                <div class="w-9 h-9 bg-emerald-100 text-emerald-700 font-bold rounded-full flex items-center justify-center text-sm shadow-sm">
-                    {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
-                </div>
-            </div>
-        </header>
-
-        <!-- Main Workspace Scrollable -->
-        <main class="p-8 space-y-8 flex-1">
-            
-            <!-- ALERT NOTIFIKASI SYSTEM -->
-            @if(session('sukses'))
-                <div class="bg-emerald-50 border-l-4 border-emerald-500 text-emerald-800 p-4 rounded-xl text-sm font-medium shadow-sm">
-                    ✔️ {{ session('sukses') }}
-                </div>
-            @endif
-            @if(session('gagal'))
-                <div class="bg-rose-50 border-l-4 border-rose-500 text-rose-800 p-4 rounded-xl text-sm font-medium shadow-sm">
-                    ⚠️ {{ session('gagal') }}
-                </div>
-            @endif
-            @if(Auth::user()->is_blocked)
-                <div class="bg-rose-50 border border-rose-200 text-rose-700 p-4 rounded-2xl text-sm font-semibold text-center shadow-sm">
-                    🚫 Akun Anda diblokir dan tidak dapat mengajukan sewa baru.
-                    @if(Auth::user()->alasan_blokir) <br><span class="font-normal text-slate-500 text-xs">Alasan: {{ Auth::user()->alasan_blokir }}</span> @endif
-                </div>
-            @endif
-
-            <!-- HERO DASHBOARD BANNER -->
-            <div class="bg-slate-900 rounded-3xl p-8 lg:p-10 relative overflow-hidden flex flex-col justify-center min-h-[260px] shadow-xl shadow-slate-900/10">
-                <div class="absolute right-0 bottom-0 top-0 w-1/2 opacity-15 pointer-events-none bg-[url('https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=600&q=80')] bg-cover bg-center"></div>
-                <div class="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/95 to-transparent"></div>
-                
-                <div class="relative z-10 max-w-xl space-y-3">
-                    <h2 class="text-2xl lg:text-3xl font-bold text-white tracking-tight leading-tight">Sewa Sepeda Pilihanmu</h2>
-                    <p class="text-slate-400 text-xs lg:text-sm leading-relaxed">Pilih armada terbaik yang siap digunakan untuk menunjang aktivitas harian maupun olahraga santai kamu hari ini.</p>
-                </div>
-            </div>
-
-            <!-- STATUS SEWA AKTIF DINAMIS -->
-            @php
-                $statusAktif = $riwayatSewa->whereIn('status', ['Pending', 'Disetujui', 'Sedang Disewa'])->first();
-            @endphp
-            @if($statusAktif)
-            <div class="bg-white p-6 rounded-2xl border border-indigo-100 shadow-sm bg-gradient-to-br from-white to-indigo-50/20 space-y-4">
-                <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
-                    <h3 class="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-2">
-                        <span class="animate-pulse w-2 h-2 rounded-full bg-indigo-600"></span> ⏱️ Status Sewa Aktif Anda
-                    </h3>
-                    <span class="text-xs font-semibold text-slate-400">Transaksi #{{ $statusAktif->id_penyewaan }}</span>
-                </div>
-                
-                <div class="p-4 bg-white border border-indigo-100 rounded-xl shadow-inner">
-                    <div class="font-bold text-base text-slate-900 flex items-center gap-2">
-                        🚲 {{ $statusAktif->tipe }}
-                    </div>
-
-                    @if($statusAktif->status == 'Pending')
-                        <div class="text-amber-600 font-bold text-sm mt-2 flex items-center gap-1.5">🕓 Menunggu Persetujuan Admin</div>
-                        <p class="text-xs text-slate-400 mt-1">Pengajuan sewamu sedang ditinjau. Kamu akan bisa mengambil sepeda setelah disetujui admin.</p>
-                    @elseif($statusAktif->status == 'Disetujui')
-                        <div class="text-blue-600 font-bold text-sm mt-2 flex items-center gap-1.5">✅ Silakan Ambil Sepeda</div>
-                        <p class="text-xs text-slate-400 mt-1">Pesananmu sudah disetujui. Datang ke lokasi rental dengan membawa NIK asli untuk mengambil sepeda, lalu lakukan pembayaran.</p>
-                    @elseif($statusAktif->status == 'Sedang Disewa')
-                        <div class="text-indigo-600 font-bold text-sm mt-2 flex items-center gap-1.5">🚀 Sepeda Sedang Disewa</div>
-                        <p class="text-xs text-slate-400 mt-1">Batas waktu pengembalian: <span class="font-semibold text-slate-700">{{ \Carbon\Carbon::parse($statusAktif->deadline_kembali)->format('d M Y H:i') }}</span></p>
-                        <div class="mt-3 text-lg font-extrabold text-indigo-600 tracking-wide bg-indigo-50 px-4 py-2 rounded-lg inline-block" id="countdown" data-deadline="{{ \Carbon\Carbon::parse($statusAktif->deadline_kembali)->toIso8601String() }}">
-                            Menghitung sisa waktu...
-                        </div>
-                    @endif
-                </div>
-            </div>
-            @endif
-
-            <!-- FILTER SEARCH SECTION BAR -->
-            <div class="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-sm">
-                <form method="GET" action="/dashboard" class="flex flex-col md:flex-row gap-3">
-                    <div class="relative flex-1">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        </span>
-                        <input type="text" name="cari" placeholder="Cari tipe sepeda..." value="{{ request('cari') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition">
-                    </div>
-                    
-                    <select name="status" class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-600 focus:outline-none focus:border-emerald-500 transition">
-                        <option value="">Semua Status</option>
-                        <option value="Tersedia" {{ request('status') == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
-                        <option value="Disewa" {{ request('status') == 'Disewa' ? 'selected' : '' }}>Disewa</option>
-                        <option value="Maintenance" {{ request('status') == 'Maintenance' ? 'selected' : '' }}>Maintenance</option>
-                    </select>
-
-                    <select name="kategori" class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-600 focus:outline-none focus:border-emerald-500 transition">
-                        <option value="">Semua Kategori</option>
-                        @foreach($daftarKategori as $kategori)
-                            <option value="{{ $kategori }}" {{ request('kategori') == $kategori ? 'selected' : '' }}>{{ $kategori }}</option>
-                        @endforeach
-                    </select>
-
-                    <div class="flex gap-2">
-                        <button type="submit" class="bg-emerald-600 text-white text-xs font-bold px-5 py-2.5 rounded-xl hover:bg-emerald-700 transition flex-1 md:flex-none">Filter</button>
-                        <a href="/dashboard" class="bg-slate-100 text-slate-600 text-xs font-bold px-5 py-2.5 rounded-xl hover:bg-slate-200 transition text-center flex-1 md:flex-none">Reset</a>
-                    </div>
-                </form>
-            </div>
-
-            <!-- GRID DATA CATALOG UNIT SEPEDA -->
-            <div class="space-y-4">
-                <h3 class="text-lg font-bold text-slate-900 tracking-tight">Katalog Armada</h3>
-                
-                @if($sepedaTersedia->isEmpty())
-                    <div class="bg-white p-12 text-center rounded-2xl border border-dashed border-slate-300 text-slate-400 text-sm font-medium">
-                        Tidak ada sepeda yang cocok dengan filter pencarian kamu.
-                    </div>
-                @else
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        @foreach($sepedaTersedia as $sepeda)
-                        @php
-                            $bisaSewa = $sepeda->status === 'Tersedia' && $sepeda->stok > 0;
-                            $chipClass = match(true) {
-                                $sepeda->status === 'Tersedia' && $sepeda->stok > 0 => 'bg-emerald-50 text-emerald-700',
-                                $sepeda->status === 'Tersedia' && $sepeda->stok <= 0 => 'bg-rose-50 text-rose-700',
-                                $sepeda->status === 'Maintenance' => 'bg-amber-50 text-amber-700',
-                                $sepeda->status === 'Disewa' => 'bg-indigo-50 text-indigo-700',
-                                default => 'bg-slate-100 text-slate-700',
-                            };
-                            $labelStatus = ($sepeda->status === 'Tersedia' && $sepeda->stok <= 0) ? 'Stok Habis' : $sepeda->status;
-                        @endphp
-                        
-                        <div class="bg-white rounded-2xl border border-slate-200/60 overflow-hidden shadow-sm hover:shadow-md transition group flex flex-col justify-between {{ $bisaSewa ? '' : 'opacity-75' }}">
-                            <div class="relative bg-slate-100 aspect-[4/3] overflow-hidden shrink-0">
-                                @if($sepeda->gambar)
-                                    <img src="{{ asset('storage/' . $sepeda->gambar) }}" alt="{{ $sepeda->tipe }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                                @else
-                                    <div class="w-full h-full flex items-center justify-center bg-slate-100 text-4xl">🚲</div>
-                                @endif
-                                <span class="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-sm uppercase tracking-wider {{ $chipClass }}">
-                                    {{ $labelStatus }}
-                                </span>
-                            </div>
-
-                            <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
-                                <div class="space-y-1">
-                                    <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">{{ $sepeda->kategori }}</span>
-                                    <h4 class="font-bold text-slate-900 text-base line-clamp-1 pt-1">{{ $sepeda->tipe }}</h4>
-                                </div>
-
-                                <div class="space-y-1 bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-600">
-                                    <div class="flex justify-between"><span>Per Jam:</span> <span class="font-bold text-slate-900">Rp {{ number_format($sepeda->harga_per_jam, 0, ',', '.') }}</span></div>
-                                    <div class="flex justify-between"><span>Per Hari:</span> <span class="font-bold text-slate-900">Rp {{ number_format($sepeda->harga_per_hari, 0, ',', '.') }}</span></div>
-                                    <div class="flex justify-between border-t border-slate-200/60 pt-1 mt-1 text-[11px] font-medium text-slate-400"><span>Sisa Stok:</span> <span>{{ $sepeda->stok }} unit</span></div>
-                                </div>
-
-                                @if(!$bisaSewa)
-                                    <button class="w-full bg-slate-100 text-slate-400 text-xs font-bold py-2.5 rounded-xl cursor-not-allowed">
-                                        {{ $sepeda->status === 'Maintenance' ? 'Sedang Maintenance' : ($sepeda->status === 'Disewa' ? 'Sedang Disewa' : 'Stok Habis') }}
-                                    </button>
-                                @elseif(!Auth::user()->is_blocked)
-                                    <button type="button" class="w-full bg-slate-950 text-white text-xs font-bold py-2.5 rounded-xl hover:bg-emerald-600 transition shadow-sm shadow-slate-950/10" onclick="openSewa({{ $sepeda->id_sepeda }}, '{{ addslashes($sepeda->tipe) }}', {{ $sepeda->harga_per_jam }}, {{ $sepeda->harga_per_hari }})">
-                                        Ajukan Sewa
-                                    </button>
-                                @endif
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                @endif
-            </div>
-
-            <!-- TABLE SECTION: RIWAYAT SEWA SAYA -->
-            <div class="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
-                <div class="p-5 border-b border-slate-100 flex items-center justify-between">
-                    <h3 class="text-base font-bold text-slate-900 tracking-tight">📋 Riwayat Sewa Saya</h3>
-                </div>
-                
-                @if($riwayatSewa->isEmpty())
-                    <div class="p-8 text-center text-slate-400 text-xs font-medium">Kamu belum pernah menyewa sepeda di sistem kami.</div>
-                @else
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs whitespace-nowrap">
-                            <thead class="bg-slate-50 text-slate-400 text-[10px] font-bold uppercase tracking-wider border-b border-slate-100">
-                                <tr>
-                                    <th class="py-3.5 px-6">Tipe Sepeda</th>
-                                    <th class="py-3.5 px-6">Durasi</th>
-                                    <th class="py-3.5 px-6">Total Biaya</th>
-                                    <th class="py-3.5 px-6">Status Transaksi</th>
-                                    <th class="py-3.5 px-6">Pembayaran</th>
-                                    <th class="py-3.5 px-6 text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100 text-slate-600 font-medium">
-                                @foreach($riwayatSewa as $sewa)
-                                <tr>
-                                    <td class="py-4 px-6 font-semibold text-slate-900">{{ $sewa->tipe }}</td>
-                                    <td class="py-4 px-6 text-slate-400">{{ $sewa->durasi }} {{ $sewa->jenis_sewa == 'per_jam' ? 'jam' : 'hari' }}</td>
-                                    <td class="py-4 px-6 text-slate-900 font-semibold">
-                                        Rp {{ number_format($sewa->total_biaya, 0, ',', '.') }}
-                                        @if($sewa->total_denda > 0)
-                                            <br><span class="text-rose-600 font-bold text-[10px] bg-rose-50 px-1.5 py-0.5 rounded inline-block mt-0.5">+ Denda Rp {{ number_format($sewa->total_denda, 0, ',', '.') }}</span>
-                                        @endif
-                                    </td>
-                                    <td class="py-4 px-6">
-                                        @php
-                                            $statusStyle = [
-                                                'Pending' => 'bg-amber-50 text-amber-700',
-                                                'Disetujui' => 'bg-blue-50 text-blue-700',
-                                                'Sedang Disewa' => 'bg-indigo-50 text-indigo-700',
-                                                'Selesai' => 'bg-emerald-50 text-emerald-700',
-                                                'Ditolak' => 'bg-rose-50 text-rose-700',
-                                            ][$sewa->status] ?? 'bg-slate-50 text-slate-700';
-                                        @endphp
-                                        <span class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase {{ $statusStyle }}">{{ $sewa->status }}</span>
-                                    </td>
-                                    <td class="py-4 px-6">
-                                        @if($sewa->status_pembayaran == 'Sudah Dibayar')
-                                            <span class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase bg-emerald-50 text-emerald-700">Sudah Dibayar</span>
-                                        @else
-                                            <span class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase bg-amber-50 text-amber-700">Belum Dibayar</span>
-                                        @endif
-                                    </td>
-                                    <td class="py-4 px-6 text-center">
-                                        @if($sewa->status == 'Disetujui' && $sewa->status_pembayaran != 'Sudah Dibayar')
-                                            <button type="button" class="bg-blue-600 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg hover:bg-blue-700 shadow-sm transition" onclick="openUpload({{ $sewa->id_penyewaan }}, {{ $sewa->total_biaya }}, '{{ $sewa->batas_pembayaran ? \Carbon\Carbon::parse($sewa->batas_pembayaran)->toIso8601String() : '' }}')">Bayar Sekarang</button>
-                                        @elseif($sewa->status == 'Selesai')
-                                            <a href="/riwayat/{{ $sewa->id_penyewaan }}/nota" class="inline-flex items-center gap-1 border border-emerald-200 bg-emerald-50 text-emerald-700 text-[11px] font-bold px-3 py-1.5 rounded-lg hover:bg-emerald-100 transition" target="_blank">🧾 Nota</a>
-                                        @else
-                                            <span class="text-slate-300">-</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                @endif
-            </div>
-
-        </main>
+        <form action="/logout" method="POST" onsubmit="return confirm('Keluar dari sistem?')">
+            @csrf
+            <button type="submit" class="btn-logout">Keluar</button>
+        </form>
     </div>
+
+    @include('partials.user-nav')
+
+    <div class="hero-banner">
+        <div class="hero-emoji">🚲</div>
+        <h2>Jelajahi Kota dengan Sepeda Terbaik</h2>
+        <p>Pilih armada yang tersedia dan ajukan sewa sekarang juga</p>
+    </div>
+
+    @if(session('sukses'))
+        <div class="alert">✔️ {{ session('sukses') }}</div>
+    @endif
+    @if(session('gagal'))
+        <div class="alert-gagal">⚠️ {{ session('gagal') }}</div>
+    @endif
+
+    @if(Auth::user()->is_blocked)
+        <div class="alert-blokir">
+            🚫 Akun Anda diblokir dan tidak dapat mengajukan sewa baru.
+            @if(Auth::user()->alasan_blokir) <br>Alasan: {{ Auth::user()->alasan_blokir }} @endif
+        </div>
+    @endif
+
+    <form method="GET" action="/dashboard" class="filter-bar">
+        <input type="text" name="cari" placeholder="Cari tipe sepeda..." value="{{ request('cari') }}">
+        <select name="status">
+            <option value="">Semua Status</option>
+            <option value="Tersedia" {{ request('status') == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
+            <option value="Disewa" {{ request('status') == 'Disewa' ? 'selected' : '' }}>Disewa</option>
+            <option value="Maintenance" {{ request('status') == 'Maintenance' ? 'selected' : '' }}>Maintenance</option>
+        </select>
+        <select name="kategori">
+            <option value="">Semua Kategori</option>
+            @foreach($daftarKategori as $kategori)
+                <option value="{{ $kategori }}" {{ request('kategori') == $kategori ? 'selected' : '' }}>{{ $kategori }}</option>
+            @endforeach
+        </select>
+        <button type="submit" class="btn-filter">Filter</button>
+        <a href="/dashboard" class="btn-reset">Reset</a>
+    </form>
+
+    @if($sepedaTersedia->isEmpty())
+        <div class="empty-state">Tidak ada sepeda yang cocok dengan filter.</div>
+    @else
+        <div class="grid-sepeda">
+            @foreach($sepedaTersedia as $sepeda)
+            @php
+                $bisaSewa = $sepeda->status === 'Tersedia' && $sepeda->stok > 0;
+                $chipClass = match(true) {
+                    $sepeda->status === 'Tersedia' && $sepeda->stok > 0 => 'chip-tersedia',
+                    $sepeda->status === 'Tersedia' && $sepeda->stok <= 0 => 'chip-habis',
+                    $sepeda->status === 'Maintenance' => 'chip-maintenance',
+                    $sepeda->status === 'Disewa' => 'chip-disewa',
+                    default => 'chip-habis',
+                };
+                $labelStatus = ($sepeda->status === 'Tersedia' && $sepeda->stok <= 0) ? 'Stok Habis' : $sepeda->status;
+            @endphp
+            <div class="card-sepeda {{ $bisaSewa ? '' : 'card-nonaktif' }}">
+                @if($sepeda->gambar)
+                    <img src="{{ asset('storage/' . $sepeda->gambar) }}" alt="{{ $sepeda->tipe }}" class="foto">
+                @else
+                    <div class="foto-kosong">🚲</div>
+                @endif
+                <h3>{{ $sepeda->tipe }}</h3>
+                <div class="kategori">{{ $sepeda->kategori }}</div>
+                <span class="status-chip {{ $chipClass }}">{{ $labelStatus }}</span>
+                <div class="harga">Per Jam: <b>Rp {{ number_format($sepeda->harga_per_jam, 0, ',', '.') }}</b></div>
+                <div class="harga">Per Hari: <b>Rp {{ number_format($sepeda->harga_per_hari, 0, ',', '.') }}</b></div>
+                <div class="stok">Stok tersedia: {{ $sepeda->stok }} unit</div>
+
+                @if(!$bisaSewa)
+                    <div class="btn-sewa-disabled">
+                        {{ $sepeda->status === 'Maintenance' ? 'Sedang Maintenance' : ($sepeda->status === 'Disewa' ? 'Sedang Disewa' : 'Stok Habis') }}
+                    </div>
+                @elseif(!Auth::user()->is_blocked)
+                <div class="form-sewa">
+                    <button type="button" class="btn-sewa" onclick="openSewa({{ $sepeda->id_sepeda }}, '{{ addslashes($sepeda->tipe) }}', {{ $sepeda->harga_per_jam }}, {{ $sepeda->harga_per_hari }})">Ajukan Sewa</button>
+                </div>
+                @endif
+            </div>
+            @endforeach
+        </div>
+    @endif
 </div>
 
-<!-- ========================================== -->
-<!-- MODAL OVERLAY: AJUKAN SEWA -->
-<!-- ========================================== -->
-<div class="modal-overlay fixed inset-0 bg-slate-900/40 hidden justify-center items-center z-50 backdrop-blur-xs" id="modalSewa">
-    <div class="modal-box bg-white p-6 rounded-2xl w-full max-w-md max-h-[88vh] overflow-y-auto shadow-xl border border-slate-100 space-y-4">
-        <h3 class="text-base font-bold text-slate-900 flex items-center gap-1.5" id="sewaJudul">🚲 Ajukan Sewa</h3>
+@php
+    $statusAktif = $riwayatSewa->whereIn('status', ['Pending', 'Disetujui', 'Sedang Disewa'])->first();
+@endphp
+@if($statusAktif)
+<div class="container">
+    <div class="section-title">
+        <h2>⏱️ Status Sewa Aktif Anda</h2>
+    </div>
+    <div class="status-aktif-card">
+        <div class="judul">Transaksi #{{ $statusAktif->id_penyewaan }} · {{ $statusAktif->tipe }}</div>
 
-        <form id="formSewa" method="POST" onsubmit="return confirm('Ajukan sewa sekarang?')" class="space-y-4">
+        @if($statusAktif->status == 'Pending')
+            <div class="isi">🕓 Menunggu Persetujuan Admin</div>
+            <div class="sub">Pengajuan sewamu sedang ditinjau. Kamu akan bisa mengambil sepeda setelah disetujui admin.</div>
+        @elseif($statusAktif->status == 'Disetujui')
+            <div class="isi">✅ Silakan Ambil Sepeda</div>
+            <div class="sub">Pesananmu sudah disetujui. Datang ke lokasi rental dengan membawa NIK asli untuk mengambil sepeda, lalu lakukan pembayaran.</div>
+        @elseif($statusAktif->status == 'Sedang Disewa')
+            <div class="isi">🚲 Sedang Disewa</div>
+            <div class="sub">Batas waktu pengembalian: {{ \Carbon\Carbon::parse($statusAktif->deadline_kembali)->format('d M Y H:i') }}</div>
+            <div class="countdown" id="countdown" data-deadline="{{ \Carbon\Carbon::parse($statusAktif->deadline_kembali)->toIso8601String() }}">Menghitung sisa waktu...</div>
+        @endif
+    </div>
+</div>
+@endif
+
+<div class="container">
+    <div class="section-title">
+        <h2>📋 Riwayat Sewa Saya</h2>
+    </div>
+
+    @if($riwayatSewa->isEmpty())
+        <div class="empty-state">Kamu belum pernah menyewa sepeda.</div>
+    @else
+        <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Tipe Sepeda</th>
+                    <th>Durasi</th>
+                    <th>Total Biaya</th>
+                    <th>Status</th>
+                    <th>Pembayaran</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($riwayatSewa as $sewa)
+                <tr>
+                    <td>{{ $sewa->tipe }}</td>
+                    <td>{{ $sewa->durasi }} {{ $sewa->jenis_sewa == 'per_jam' ? 'jam' : 'hari' }}</td>
+                    <td>
+                        Rp {{ number_format($sewa->total_biaya, 0, ',', '.') }}
+                        @if($sewa->total_denda > 0)
+                            <br><span class="denda-tag">+ Denda Rp {{ number_format($sewa->total_denda, 0, ',', '.') }}</span>
+                        @endif
+                    </td>
+                    <td>
+                        @php
+                            $statusClass = [
+                                'Pending' => 'status-pending',
+                                'Disetujui' => 'status-disetujui',
+                                'Sedang Disewa' => 'status-sedang-disewa',
+                                'Selesai' => 'status-selesai',
+                                'Ditolak' => 'status-ditolak',
+                            ][$sewa->status] ?? 'status-pending';
+                        @endphp
+                        <span class="status-badge {{ $statusClass }}">{{ $sewa->status }}</span>
+                    </td>
+                    <td>
+                        @if($sewa->status_pembayaran == 'Sudah Dibayar')
+                            <span class="status-badge status-selesai">Sudah Dibayar</span>
+                        @else
+                            <span class="status-badge status-pending">Belum Dibayar</span>
+                        @endif
+                    </td>
+                    <td>
+                        @if($sewa->status == 'Disetujui' && $sewa->status_pembayaran != 'Sudah Dibayar')
+                            <button type="button" class="btn-upload" onclick="openUpload({{ $sewa->id_penyewaan }}, {{ $sewa->total_biaya }}, '{{ $sewa->batas_pembayaran ? \Carbon\Carbon::parse($sewa->batas_pembayaran)->toIso8601String() : '' }}')">Bayar Sekarang</button>
+                        @elseif($sewa->status == 'Selesai')
+                            <a href="/riwayat/{{ $sewa->id_penyewaan }}/nota" class="btn-nota" target="_blank">🧾 Lihat Nota</a>
+                        @else
+                            -
+                        @endif
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        </div>
+    @endif
+</div>
+
+<div class="modal-overlay" id="modalSewa">
+    <div class="modal-box">
+        <h3 style="margin-top:0;" id="sewaJudul">🚲 Ajukan Sewa</h3>
+
+        <form id="formSewa" method="POST" onsubmit="return confirm('Ajukan sewa sekarang?')">
             @csrf
-            <div>
-                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Jenis Sewa:</label>
-                <select name="jenis_sewa" id="sewaJenis" required onchange="updateSewaTotal()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500 transition">
-                    <option value="per_jam">Per Jam</option>
-                    <option value="per_hari">Per Hari</option>
-                </select>
-            </div>
-            
-            <div>
-                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Durasi:</label>
-                <input type="number" name="durasi" id="sewaDurasi" min="1" value="1" required oninput="updateSewaTotal()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500 transition">
-            </div>
+            <label>Jenis Sewa:</label>
+            <select name="jenis_sewa" id="sewaJenis" required onchange="updateSewaTotal()">
+                <option value="per_jam">Per Jam</option>
+                <option value="per_hari">Per Hari</option>
+            </select>
+            <label>Durasi:</label>
+            <input type="number" name="durasi" id="sewaDurasi" min="1" value="1" required oninput="updateSewaTotal()">
 
-            <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
-                <div class="text-xs font-semibold text-emerald-700">Estimasi Total Biaya:</div>
-                <div class="text-xl font-extrabold text-slate-900 mt-0.5" id="sewaTotal">Rp 0</div>
+            <div class="payment-info" style="padding:12px 14px;">
+                <div class="payment-total" style="margin-bottom:0;">Estimasi Total: <b id="sewaTotal">Rp 0</b></div>
             </div>
+            <br>
 
-            <label class="flex items-start gap-2 text-[11px] text-slate-400 leading-relaxed cursor-pointer">
-                <input type="checkbox" name="setuju_syarat" value="1" required class="mt-0.5 rounded text-emerald-600 focus:ring-emerald-500/20 border-slate-300">
-                <span>Saya menyetujui <a href="/syarat-ketentuan" target="_blank" class="text-indigo-600 font-semibold underline">Syarat &amp; Ketentuan</a> (wajib membawa NIK asli saat ambil unit dan menyetujui denda keterlambatan).</span>
+            <label class="tnc-check" style="margin-bottom:14px;">
+                <input type="checkbox" name="setuju_syarat" value="1" required>
+                Saya sudah membaca &amp; menyetujui <a href="/syarat-ketentuan" target="_blank">Syarat &amp; Ketentuan</a> penyewaan (wajib membawa NIK asli saat ambil sepeda, denda keterlambatan berlaku).
             </label>
 
-            <div class="pt-2 flex flex-col gap-2">
-                <button type="submit" class="w-full bg-emerald-600 text-white text-xs font-bold py-3 rounded-xl hover:bg-emerald-700 transition shadow-sm shadow-emerald-200">✅ Kirim Pengajuan</button>
-                <button type="button" class="w-full bg-slate-100 text-slate-500 text-xs font-bold py-2.5 rounded-xl hover:bg-slate-200 transition" onclick="document.getElementById('modalSewa').style.display='none'">Batal</button>
-            </div>
+            <button type="submit" class="btn-kirim">✅ Ajukan Sewa</button>
+            <button type="button" class="btn-batal" onclick="document.getElementById('modalSewa').style.display='none'">Batal</button>
         </form>
     </div>
 </div>
 
-<!-- ========================================== -->
-<!-- MODAL OVERLAY: PEMBAYARAN SEWA -->
-<!-- ========================================== -->
-<div class="modal-overlay fixed inset-0 bg-slate-900/40 hidden justify-center items-center z-50 backdrop-blur-xs" id="modalUpload">
-    <div class="modal-box bg-white p-6 rounded-2xl w-full max-w-md max-h-[88vh] overflow-y-auto shadow-xl border border-slate-100 space-y-4">
-        <h3 class="text-base font-bold text-slate-900">💳 Konfirmasi Pembayaran</h3>
+<div class="modal-overlay" id="modalUpload">
+    <div class="modal-box">
+        <h3 style="margin-top:0;">💳 Pembayaran Sewa</h3>
 
-        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-3">
-            <div>
-                <span class="text-xs text-slate-400 font-medium">Total Tagihan Sewa:</span>
-                <div class="text-xl font-extrabold text-slate-900" id="bayarTotal">Rp 0</div>
-            </div>
+        <div class="payment-info">
+            <div class="payment-total">Total Tagihan: <b id="bayarTotal">Rp 0</b></div>
 
-            <div class="space-y-2 pt-2 border-t border-slate-200/60">
-                <div class="bg-white p-3 rounded-lg border border-slate-200/60 shadow-xs">
-                    <div class="text-[9px] font-bold text-indigo-600 uppercase tracking-wider">Transfer Bank (VA)</div>
-                    <div class="text-[11px] font-medium text-slate-700 mt-0.5">BCA Virtual Account</div>
-                    <div class="text-sm font-extrabold text-emerald-600 tracking-wider">8808 1234 5678 901</div>
-                    <div class="text-[10px] text-slate-400 font-medium">a.n. Rental Sepeda ID</div>
+            <div class="payment-tabs">
+                <div class="payment-method-box">
+                    <div class="payment-label">Transfer Bank (VA Dummy)</div>
+                    <div class="payment-value">BCA Virtual Account<br><span class="rekening">8808 1234 5678 901</span><br>a.n. Rental Sepeda ID</div>
                 </div>
-                <div class="bg-white p-3 rounded-lg border border-slate-200/60 shadow-xs text-center">
-                    <div class="text-[9px] font-bold text-indigo-600 uppercase tracking-wider text-left">QRIS Payment Gateway</div>
-                    <div class="bg-slate-100 py-3 font-mono font-bold text-slate-400 rounded-md text-[11px] tracking-widest mt-1">▦▦ QRIS SIMULASI ▦▦</div>
+                <div class="payment-method-box">
+                    <div class="payment-label">QRIS (Dummy)</div>
+                    <div class="qris-box">▦▦▦ QRIS DEMO ▦▦▦<br><small>Simulasi — tidak untuk transaksi nyata</small></div>
                 </div>
             </div>
 
-            <div class="border-t border-slate-200/60 pt-2 text-[11px] text-slate-400" id="bayarDeadlineWrap">
-                Batas Akhir Waktu Pembayaran:
-                <div class="text-xs font-bold text-amber-700 mt-0.5" id="countdownBayar">Menghitung...</div>
+            <div class="payment-deadline" id="bayarDeadlineWrap">
+                Batas waktu pembayaran:
+                <div class="countdown-bayar" id="countdownBayar">Menghitung...</div>
             </div>
         </div>
 
-        <form id="formUpload" method="POST" onsubmit="return confirm('Konfirmasi bahwa pembayaran sudah kamu lakukan?')" class="space-y-4">
+        <form id="formUpload" method="POST" onsubmit="return confirm('Konfirmasi bahwa pembayaran sudah kamu lakukan?')">
             @csrf
-            <div>
-                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Pilih Metode Pembayaran:</label>
-                <select name="metode_pembayaran" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500 transition">
-                    <option value="transfer">Transfer Bank (VA)</option>
-                    <option value="tunai">Tunai (bayar langsung di lokasi)</option>
-                </select>
-            </div>
-            
-            <div class="pt-2 flex flex-col gap-2">
-                <button type="submit" class="w-full bg-emerald-600 text-white text-xs font-bold py-3 rounded-xl hover:bg-emerald-700 transition shadow-sm shadow-emerald-200">✅ Konfirmasi Bayar</button>
-                <button type="button" class="w-full bg-slate-100 text-slate-500 text-xs font-bold py-2.5 rounded-xl hover:bg-slate-200 transition" onclick="document.getElementById('modalUpload').style.display='none'">Batal</button>
-            </div>
+            <label>Metode Pembayaran:</label>
+            <select name="metode_pembayaran" required>
+                <option value="transfer">Transfer Bank (VA)</option>
+                <option value="tunai">Tunai (bayar di lokasi)</option>
+            </select>
+            <button type="submit" class="btn-kirim">✅ Konfirmasi Pembayaran</button>
+            <button type="button" class="btn-batal" onclick="document.getElementById('modalUpload').style.display='none'">Batal</button>
         </form>
     </div>
 </div>
 
-<!-- ========================================== -->
-<!-- CORE JAVASCRIPT LOGIC FUNCTIONS -->
-<!-- ========================================== -->
 <script>
     let sewaHargaJam = 0;
     let sewaHargaHari = 0;
@@ -441,7 +439,6 @@
 
     function updateCountdownBayar() {
         const el = document.getElementById('countdownBayar');
-        if (!el) return;
         if (!bayarDeadline) { el.innerText = '-'; return; }
         const now = new Date();
         let diff = bayarDeadline - now;
@@ -449,15 +446,14 @@
             const telat = Math.abs(diff);
             const jam = Math.floor(telat / 3600000);
             const menit = Math.floor((telat % 3600000) / 60000);
-            el.innerText = '⚠️ Waktu Habis (' + jam + ' jam ' + menit + ' m lalu) — Segera hubungi admin.';
-            el.className = "text-xs font-bold text-rose-600 mt-0.5";
+            el.innerText = '⚠️ Sudah lewat ' + jam + ' jam ' + menit + ' menit — segera hubungi admin.';
+            el.classList.add('telat');
             return;
         }
         const jam = Math.floor(diff / 3600000);
         const menit = Math.floor((diff % 3600000) / 60000);
         const detik = Math.floor((diff % 60000) / 1000);
         el.innerText = jam + ' jam ' + menit + ' menit ' + detik + ' detik lagi';
-        el.className = "text-xs font-bold text-amber-600 mt-0.5";
     }
     setInterval(updateCountdownBayar, 1000);
 
@@ -468,7 +464,7 @@
         if (event.target == modalSewa) modalSewa.style.display = 'none';
     }
 
-    // Sistem Hitung Mundur Sisa Waktu Pemakaian Rental Sepeda Aktif
+    // Hitung mundur sisa waktu sewa untuk transaksi yang sedang berjalan
     const countdownEl = document.getElementById('countdown');
     if (countdownEl) {
         const deadline = new Date(countdownEl.dataset.deadline);
@@ -476,18 +472,18 @@
             const now = new Date();
             let diff = deadline - now;
             if (diff <= 0) {
-                countdownEl.className = "mt-3 text-lg font-extrabold text-rose-600 tracking-wide bg-rose-50 px-4 py-2 rounded-lg inline-block";
+                countdownEl.classList.add('telat');
                 const telat = Math.abs(diff);
                 const j = Math.floor(telat / 3600000);
                 const m = Math.floor((telat % 3600000) / 60000);
-                countdownEl.innerText = '⚠️ Terlambat ' + j + ' jam ' + m + ' menit — Harap segera kembalikan!';
+                countdownEl.innerText = '⚠️ Sudah telat ' + j + ' jam ' + m + ' menit — segera kembalikan!';
                 return;
             }
             const hari = Math.floor(diff / 86400000);
             const jam = Math.floor((diff % 86400000) / 3600000);
             const menit = Math.floor((diff % 3600000) / 60000);
             const detik = Math.floor((diff % 60000) / 1000);
-            let teks = 'Sisa waktu sewa: ';
+            let teks = 'Sisa waktu: ';
             if (hari > 0) teks += hari + ' hari ';
             teks += jam + ' jam ' + menit + ' menit ' + detik + ' detik';
             countdownEl.innerText = teks;
