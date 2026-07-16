@@ -4,128 +4,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin - Rental Sepeda</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0; padding: 40px 24px;
-            background-color: #f4f8fb;
+            background-color: #F6F7FB;
             background-image:
-                radial-gradient(circle at 8% 8%, rgba(99, 102, 241, 0.14), transparent 32%),
-                radial-gradient(circle at 92% 18%, rgba(139, 92, 246, 0.14), transparent 34%),
-                radial-gradient(circle at 50% 95%, rgba(16, 185, 129, 0.08), transparent 38%);
+                radial-gradient(circle at 6% 0%, rgba(6, 182, 212, 0.10), transparent 30%),
+                radial-gradient(circle at 96% 12%, rgba(168, 85, 247, 0.10), transparent 32%);
             background-attachment: fixed;
-            color: #1e293b;
+            color: #10131C;
         }
 
         .container {
-            max-width: 1180px;
-            margin: auto;
-            background: #ffffff;
-            padding: 32px;
+            max-width: 1180px; margin: auto;
+            background: #ffffff; padding: 32px;
             border-radius: 24px;
-            box-shadow: 0px 14px 40px rgba(15, 23, 42, 0.07);
-            border: 1px solid #eef2f7;
+            box-shadow: 0px 14px 40px rgba(15, 23, 42, 0.06);
+            border: 1px solid #EEF0F7;
         }
 
-        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 13px; color: #64748b; }
-        .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; color: #0f172a; font-size: 15px; }
-        .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); }
-        .topbar .user-info b { color: #0f172a; }
-        .topbar .role-badge { background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #6d28d9; font-weight: 700; padding: 3px 10px; border-radius: 999px; font-size: 11px; text-transform: uppercase; margin-left: 6px; }
-        .btn-logout { background: #fff; color: #ef4444; border: 1px solid #fecaca; padding: 8px 16px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700; transition: all 0.15s; }
-        .btn-logout:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 13px; color: #6B7280; }
+        .topbar .user-info b { color: #10131C; }
+        .topbar .role-badge {
+            background: linear-gradient(135deg, #E0E7FF, #F3E8FF); color: #6D28D9;
+            font-weight: 700; padding: 3px 10px; border-radius: 999px; font-size: 11px;
+            text-transform: uppercase; margin-left: 6px;
+        }
+        .btn-logout {
+            background: #fff; color: #E11D48; border: 1px solid #FECDD3;
+            padding: 8px 16px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700;
+        }
+        .btn-logout:hover { background: #E11D48; color: #fff; border-color: #E11D48; }
 
-        .header-wrapper { display: flex; flex-direction: column; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 22px; margin-bottom: 24px; }
-        .header-title { width: 100%; text-align: center; }
-        .header-title h2 { margin: 0 0 16px 0; font-size: 22px; color: #0f172a; letter-spacing: 0.2px; text-align: center; }
-        .btn-center-wrapper { display: flex; justify-content: center; width: 100%; }
+        .header-wrapper { text-align: center; padding-bottom: 22px; margin-bottom: 8px; }
+        .eyebrow {
+            font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+            letter-spacing: 2px; text-transform: uppercase; color: #635BFF; margin-bottom: 6px;
+        }
+        .header-wrapper h2 {
+            font-family: 'Space Grotesk', sans-serif; margin: 0 0 18px 0;
+            font-size: 25px; font-weight: 700; color: #10131C; letter-spacing: -0.3px;
+        }
 
-        button { border: none; border-radius: 999px; cursor: pointer; font-weight: 700; transition: all 0.2s; }
+        button { border: none; border-radius: 999px; cursor: pointer; font-weight: 700; transition: all 0.18s; font-family: 'Inter', sans-serif; }
         .btn-trigger {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; font-size: 14px;
-            display: flex; align-items: center; gap: 8px; padding: 12px 24px;
-            box-shadow: 0 10px 22px rgba(99, 102, 241, 0.30);
+            background: linear-gradient(135deg, #06B6D4 0%, #635BFF 55%, #A855F7 100%); color: white; font-size: 14px;
+            display: inline-flex; align-items: center; gap: 8px; padding: 12px 26px;
+            box-shadow: 0 10px 22px -6px rgba(99, 91, 255, 0.45);
         }
-        .btn-trigger:hover { transform: translateY(-1px); box-shadow: 0 14px 26px rgba(99, 102, 241, 0.38); }
+        .btn-trigger:hover { transform: translateY(-1px); box-shadow: 0 14px 26px -6px rgba(99, 91, 255, 0.55); }
 
-        .alert { padding: 13px 16px; background-color: #ecfdf5; color: #047857; border-radius: 12px; margin-bottom: 20px; font-size: 14px; border: 1px solid #a7f3d0; font-weight: 600; }
+        /* Strip statistik */
+        .stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 26px 0; }
+        .stat-chip { border: 1px solid #EEF0F7; border-radius: 16px; padding: 14px 16px; position: relative; overflow: hidden; }
+        .stat-chip::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+        .stat-chip .stat-label { font-size: 11px; font-weight: 600; color: #8A8FA3; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-chip .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 600; color: #10131C; margin-top: 4px; }
+        .stat-total::before { background: linear-gradient(90deg, #06B6D4, #635BFF); }
+        .stat-tersedia::before { background: #059669; }
+        .stat-maintenance::before { background: #D97706; }
+        .stat-unit::before { background: #A855F7; }
 
-        .filter-bar {
-            display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
-            margin-bottom: 20px; padding: 12px; background: #f8fafc; border-radius: 16px; border: 1px solid #eef2f7;
-        }
-        .filter-bar select, .filter-bar input[type="text"] {
-            padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 999px; font-size: 13px; background: #fff;
-        }
+        .alert { padding: 13px 16px; background-color: #ECFDF5; color: #047857; border-radius: 12px; margin-bottom: 20px; font-size: 14px; border: 1px solid #A7F3D0; font-weight: 600; }
+
+        .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 20px; padding: 12px; background: #F8FAFC; border-radius: 16px; border: 1px solid #EEF0F7; }
+        .filter-bar select, .filter-bar input[type="text"] { padding: 10px 14px; border: 1px solid #E2E8F0; border-radius: 999px; font-size: 13px; background: #fff; font-family: 'Inter', sans-serif; }
         .filter-bar input[type="text"] { flex: 1; min-width: 180px; }
-        .filter-bar .btn-filter { background: linear-gradient(135deg, #0f172a, #334155); color: #fff; padding: 10px 22px; font-size: 13px; }
-        .filter-bar .btn-filter:hover { opacity: 0.9; }
+        .filter-bar .btn-filter { background: linear-gradient(135deg, #10131C, #333849); color: #fff; padding: 10px 22px; font-size: 13px; }
         .filter-bar .btn-reset { background: #fff; color: #475569; border: 1px solid #e2e8f0; padding: 10px 22px; font-size: 13px; text-decoration: none; font-weight: 700; }
 
-        .table-wrapper { overflow-x: auto; border-radius: 16px; border: 1px solid #eef2f7; }
+        .table-wrapper { overflow-x: auto; border-radius: 14px; border: 1px solid #EEF0F7; }
         table { width: 100%; border-collapse: collapse; background: transparent; }
-        th, td { text-align: left; padding: 14px; font-size: 13.5px; border-bottom: 1px solid #f1f5f9; }
-        th { background-color: #f8fafc; color: #64748b; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; }
-        td { background-color: #ffffff; color: #1e293b; }
+        th, td { text-align: left; padding: 9px 12px; font-size: 12.5px; border-bottom: 1px solid #F2F3F9; }
+        th { background-color: #FAFAFD; color: #8A8FA3; font-weight: 700; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.5px; }
+        td { background-color: #ffffff; color: #10131C; }
+        tbody tr { border-left: 3px solid transparent; }
+        tbody tr:hover { border-left-color: #635BFF; }
+        tbody tr:hover td { background-color: #FAFAFF; }
         tbody tr:last-child td { border-bottom: none; }
-        tbody tr:hover td { background-color: #fafbff; }
+        .col-num { font-family: 'JetBrains Mono', monospace; text-align: right; }
 
-        .btn-edit { background-color: #fffbeb; color: #b45309; margin-right: 6px; border: 1px solid #fde68a; padding: 8px 16px; font-size: 13px; }
-        .btn-edit:hover { background-color: #fef3c7; }
-        .btn-delete { background-color: #fef2f2; color: #dc2626; border: 1px solid #fecaca; padding: 8px 16px; font-size: 13px; }
-        .btn-delete:hover { background-color: #fee2e2; }
+        .btn-edit, .btn-delete { padding: 6px 13px; font-size: 12px; }
+        .btn-edit { background-color: #FFFBEB; color: #B45309; margin-right: 4px; border: 1px solid #FDE68A; }
+        .btn-edit:hover { background-color: #FEF3C7; }
+        .btn-delete { background-color: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+        .btn-delete:hover { background-color: #FEE2E2; }
 
-        .btn-add {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white;
-            width: 100%; padding: 13px; font-size: 15px; margin-top: 10px;
-            box-shadow: 0 10px 22px rgba(99, 102, 241, 0.30);
-        }
-        .btn-add:hover { transform: translateY(-1px); }
-        .btn-close { background-color: #f1f5f9; color: #475569; width: 100%; padding: 11px; margin-top: 8px; font-size: 14px; }
-        .btn-close:hover { background-color: #e2e8f0; color: #0f172a; }
+        .btn-add { background: linear-gradient(135deg, #06B6D4 0%, #635BFF 55%, #A855F7 100%); color: white; width: 100%; padding: 13px; font-size: 15px; margin-top: 10px; box-shadow: 0 10px 22px -6px rgba(99, 91, 255, 0.4); }
+        .btn-close { background-color: #F1F5F9; color: #475569; width: 100%; padding: 11px; margin-top: 8px; font-size: 14px; }
+        .btn-close:hover { background-color: #E2E8F0; color: #10131C; }
 
-        .status-badge { font-weight: 700; padding: 4px 12px; border-radius: 999px; font-size: 12px; }
-        .status-tersedia { color: #047857; background-color: #d1fae5; }
-        .status-maintenance { color: #b45309; background-color: #fef3c7; }
+        .pill-dot { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 12px; padding: 3px 10px 3px 8px; border-radius: 999px; }
+        .pill-dot::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+        .status-tersedia { color: #047857; background: #ECFDF5; } .status-tersedia::before { background: #10B981; }
+        .status-maintenance { color: #B45309; background: #FFFBEB; } .status-maintenance::before { background: #F59E0B; }
 
-        .stok-badge { font-weight: 700; }
-        .stok-habis { color: #dc2626; }
-        .stok-menipis { color: #b45309; }
+        .stok-badge { font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+        .stok-habis { color: #DC2626; }
+        .stok-menipis { color: #B45309; }
         .stok-aman { color: #047857; }
 
-        .kategori-chip { background: #eef2ff; color: #4338ca; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+        .kategori-chip { background: #EEF2FF; color: #4338CA; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
 
-        .foto-thumb { width: 46px; height: 46px; object-fit: cover; border-radius: 10px; border: 1px solid #eef2f7; }
-        .foto-thumb-empty {
-            width: 46px; height: 46px; border-radius: 10px;
-            background: linear-gradient(135deg, #eef2ff, #f5f3ff);
-            display: flex; align-items: center; justify-content: center; font-size: 18px;
-        }
+        .foto-thumb { width: 38px; height: 38px; object-fit: cover; border-radius: 9px; border: 1px solid #EEF0F7; }
+        .foto-thumb-empty { width: 38px; height: 38px; border-radius: 9px; background: linear-gradient(135deg, #EEF2FF, #F5F3FF); display: flex; align-items: center; justify-content: center; font-size: 16px; }
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.45); display: none; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(4px); }
-        .modal-box { background: #ffffff; padding: 26px 30px; border-radius: 20px; width: 100%; max-width: 460px; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18); border: 1px solid #eef2f7; animation: fadeIn 0.25s ease; }
-        .modal-box h3 { position: sticky; top: -26px; background: #fff; margin: -26px -30px 14px; padding: 26px 30px 14px; z-index: 2; border-bottom: 2px solid #f1f5f9; font-size: 18px; color: #0f172a; }
+        .modal-box { background: #ffffff; padding: 26px 30px; border-radius: 20px; width: 100%; max-width: 460px; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18); border: 1px solid #EEF0F7; animation: fadeIn 0.25s ease; }
+        .modal-box h3 { position: sticky; top: -26px; background: #fff; margin: -26px -30px 14px; padding: 26px 30px 14px; z-index: 2; border-bottom: 2px solid #F1F5F9; font-family: 'Space Grotesk', sans-serif; font-size: 18px; color: #10131C; }
         .form-group { margin-bottom: 14px; }
         label { display: block; margin-bottom: 5px; font-weight: 700; font-size: 13px; color: #475569; }
-        input, select { width: 100%; padding: 10px 12px; box-sizing: border-box; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 13.5px; background-color: #f8fafc; color: #0f172a; }
-        input:focus, select:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12); background: #fff; }
-        select option { background-color: #ffffff; color: #0f172a; }
+        input, select { width: 100%; padding: 10px 12px; box-sizing: border-box; border: 1px solid #E2E8F0; border-radius: 12px; font-size: 13.5px; background-color: #F8FAFC; color: #10131C; font-family: 'Inter', sans-serif; }
+        input:focus, select:focus { outline: none; border-color: #635BFF; box-shadow: 0 0 0 4px rgba(99, 91, 255, 0.12); background: #fff; }
 
-        @keyframes fadeIn {
-            from { transform: translateY(-16px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        @keyframes fadeIn { from { transform: translateY(-16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="topbar">
-        <div class="user-info">
-            Masuk sebagai <b>{{ Auth::user()->name }}</b>
-            <span class="role-badge">{{ Auth::user()->role }}</span>
-        </div>
+        <div class="user-info">Masuk sebagai <b>{{ Auth::user()->name }}</b><span class="role-badge">{{ Auth::user()->role }}</span></div>
         <form action="/logout" method="POST" onsubmit="return confirm('Keluar dari sistem?')">
             @csrf
             <button type="submit" class="btn-logout">Keluar</button>
@@ -135,11 +138,27 @@
     @include('partials.admin-nav')
 
     <div class="header-wrapper">
-        <div class="header-title">
-            <h2>🚲 Dashboard Admin — Inventaris Rental Sepeda</h2>
-            <div class="btn-center-wrapper">
-                <button class="btn-trigger" onclick="openModal('POST')">＋ Tambah Armada Sepeda</button>
-            </div>
+        <div class="eyebrow">Panel Kendali Armada</div>
+        <h2>Inventaris Rental Sepeda</h2>
+        <button class="btn-trigger" onclick="openModal('POST')">＋ Tambah Armada Sepeda</button>
+    </div>
+
+    <div class="stat-strip">
+        <div class="stat-chip stat-total">
+            <div class="stat-label">Total Tipe</div>
+            <div class="stat-value">{{ $daftarSepeda->count() }}</div>
+        </div>
+        <div class="stat-chip stat-tersedia">
+            <div class="stat-label">Tersedia</div>
+            <div class="stat-value">{{ $daftarSepeda->where('status', 'Tersedia')->count() }}</div>
+        </div>
+        <div class="stat-chip stat-maintenance">
+            <div class="stat-label">Maintenance</div>
+            <div class="stat-value">{{ $daftarSepeda->where('status', 'Maintenance')->count() }}</div>
+        </div>
+        <div class="stat-chip stat-unit">
+            <div class="stat-label">Total Unit</div>
+            <div class="stat-value">{{ $daftarSepeda->sum('stok') }}</div>
         </div>
     </div>
 
@@ -168,23 +187,22 @@
     <table>
         <thead>
             <tr>
-                <th style="width: 60px;">ID</th>
-                <th style="width: 70px;">Foto</th>
+                <th style="width: 46px;">ID</th>
+                <th style="width: 54px;">Foto</th>
                 <th>Tipe Sepeda</th>
                 <th>Kategori</th>
                 <th>Stok</th>
-                <th>Harga / Jam</th>
-                <th>Harga / Hari</th>
-                <th>Denda / Jam</th>
-                <th>Denda / Hari</th>
+                <th class="col-num">Harga/Jam</th>
+                <th class="col-num">Harga/Hari</th>
+                <th class="col-num">Denda/Jam</th>
                 <th>Status</th>
-                <th style="width: 170px;">Aksi</th>
+                <th style="width: 140px;">Aksi</th>
             </tr>
         </thead>
         <tbody>
             @forelse($daftarSepeda as $sepeda)
             <tr>
-                <td style="font-weight: bold; color: #94a3b8;">#{{ $loop->iteration }}</td>
+                <td style="font-weight: bold; color: #B5B9C9;">#{{ $loop->iteration }}</td>
                 <td>
                     @if($sepeda->gambar)
                         <img src="{{ asset('storage/' . $sepeda->gambar) }}" alt="{{ $sepeda->tipe }}" class="foto-thumb">
@@ -192,19 +210,18 @@
                         <div class="foto-thumb-empty">🚲</div>
                     @endif
                 </td>
-                <td style="font-weight: 600; color: #0f172a;">{{ $sepeda->tipe }}</td>
+                <td style="font-weight: 600;">{{ $sepeda->tipe }}</td>
                 <td><span class="kategori-chip">{{ $sepeda->kategori }}</span></td>
                 <td>
                     <span class="stok-badge {{ $sepeda->stok == 0 ? 'stok-habis' : ($sepeda->stok <= 2 ? 'stok-menipis' : 'stok-aman') }}">
                         {{ $sepeda->stok }} unit
                     </span>
                 </td>
-                <td>Rp {{ number_format($sepeda->harga_per_jam, 0, ',', '.') }}</td>
-                <td>Rp {{ number_format($sepeda->harga_per_hari, 0, ',', '.') }}</td>
-                <td>Rp {{ number_format($sepeda->denda_per_jam ?? 0, 0, ',', '.') }}</td>
-                <td>Rp {{ number_format($sepeda->denda_per_hari ?? 0, 0, ',', '.') }}</td>
+                <td class="col-num">Rp {{ number_format($sepeda->harga_per_jam, 0, ',', '.') }}</td>
+                <td class="col-num">Rp {{ number_format($sepeda->harga_per_hari, 0, ',', '.') }}</td>
+                <td class="col-num">Rp {{ number_format($sepeda->denda_per_jam ?? 0, 0, ',', '.') }}</td>
                 <td>
-                    <span class="status-badge {{ $sepeda->status == 'Tersedia' ? 'status-tersedia' : 'status-maintenance' }}">
+                    <span class="pill-dot {{ $sepeda->status == 'Tersedia' ? 'status-tersedia' : 'status-maintenance' }}">
                         {{ $sepeda->status }}
                     </span>
                 </td>
@@ -219,7 +236,7 @@
                 </td>
             </tr>
             @empty
-            <tr><td colspan="11" style="text-align:center; color:#94a3b8; padding: 30px;">Tidak ada data sepeda yang cocok dengan filter.</td></tr>
+            <tr><td colspan="10" style="text-align:center; color:#94a3b8; padding: 30px;">Tidak ada data sepeda yang cocok dengan filter.</td></tr>
             @endforelse
         </tbody>
     </table>
@@ -300,7 +317,7 @@
             document.getElementById('formSepeda').reset();
             document.getElementById('previewWrapper').style.display = 'none';
             document.getElementById('btnSubmit').innerText = 'Simpan Data Sepeda';
-            document.getElementById('btnSubmit').style.background = 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)';
+            document.getElementById('btnSubmit').style.background = 'linear-gradient(135deg, #06B6D4 0%, #635BFF 55%, #A855F7 100%)';
             document.getElementById('btnSubmit').style.color = 'white';
         }
     }
